@@ -8,6 +8,7 @@ var http = require('http');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var game = require('./routes/game');
 
 var app = express();
 http.createServer(app).listen(3000);
@@ -25,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
-
+app.use('/game',game);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
