@@ -60,3 +60,7 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+
+
+//Other resource
+// Card image from http://www.jfitz.com/cards/classic-playing-cards.png

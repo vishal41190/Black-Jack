@@ -5,7 +5,7 @@ var stackModel = require('../model/stack');
 router.get('/', function(req, res, next) {
     var stack = new stackModel.Stack();
     stack.makeDeck(1);
-    stack.shuffle(5);
+   // stack.shuffle(5);
     console.log(stack.cards);
   res.render('index', { title: stack });
 });
