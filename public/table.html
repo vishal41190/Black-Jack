@@ -3,9 +3,11 @@
 <head>
   <title>BlackJack</title>
   <link rel="stylesheet" type="text/css" href="./stylesheets/styleTable.css">
+  <link rel="stylesheet" type="text/css" href="./stylesheets/bootstrap.css">
 </head>
 <body>
-  <div id="wrapper">
+<div class="col-md-3 left-area"></div>
+  <div id="wrapper col-md-6">
   <div id="game">
     <div id="alert" class="alert alert-error hide"><span></span></div>
     <div id="dealer">
@@ -19,15 +21,22 @@
       <div id="bank">Winnings: $<span></span></div>
     </div>
   </div>
-  <div id="actions">
-    <button id="deal" class="btn">Deal!</button>
-    <button id="hit" class="btn" disabled>Hit</button>
-    <button id="stand" class="btn" disabled>Stand</button>
-    <button id="double" class="btn" disabled>Double Down</button>
-    <button id="split" class="btn" disabled>Split</button>
-    <button id="insurance" class="btn" disabled>Play</button>
+  <div class="col-md-3"></div>
+  <div id="actions col-md-6">
+    <button id="deal" class="btn btn-default">Deal!</button>
+    <button id="hit" class="btn btn-default" disabled>Hit</button>
+    <button id="stand" class="btn btn-default" disabled>Stand</button>
+    <button id="double" class="btn btn-default" disabled>Double Down</button>
+    <button id="split" class="btn btn-default" disabled>Split</button>
+    <button id="insurance" class="btn btn-default" disabled>Play</button>
     <strong>Wager:</strong> $<input id="wager" class="input-small" type="text" />
+    <!-- <div class="input-group">
+      <span class="input-group-addon">$</span>
+      <input type="text" class="form-control input-small" id="wager" aria-label="Amount (to the nearest dollar)">
+      <span class="input-group-addon">.00</span>
+    </div> -->
   </div>
+  <div class="col-md-3"></div>
 </div>
 <div id="myModal" class="modal hide fade">
   <div class="modal-header">
@@ -42,6 +51,8 @@
     <a href="#" id="newGame" class="btn btn-primary">Yes!</a>
   </div>
 </div>
+<div class="col-md-3 right-area"></div>
   <script src="./js/table.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </body>
 </html>
