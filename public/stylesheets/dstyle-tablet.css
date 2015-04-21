@@ -1,0 +1,46 @@
+@media screen and (min-width: 28.75em) {
+    div.chip-plate{
+        position:fixed;
+        top:0%;
+        left:38%;
+
+    }
+
+
+    span.coin-box{
+        position:inherit;
+        display: block;
+        width:25%;
+        height:15%; 
+        background-image: url(../images/coin-box.png);
+        background-size: cover;
+    }
+    div.table-text{
+        position:fixed;
+        top: 20%;
+        left: 21%
+    }
+    span.table-text{
+        position:inherit;
+        display:block;
+        width: 60%;
+        height: 50%;
+        background-image: url(../images/table-text.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .player-left{
+        position:fixed;
+        top:60%;
+        left: 20%;
+    }
+    .player-left span {
+        position:inherit;
+        display:block; 
+        width:15%;
+        height:19%;
+        background-image: url(../images/player.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}
