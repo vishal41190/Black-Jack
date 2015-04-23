@@ -3,10 +3,7 @@
         position:fixed;
         top:0%;
         left:38%;
-
     }
-
-
     span.coin-box{
         position:inherit;
         display: block;
@@ -23,7 +20,7 @@
     span.table-text{
         position:inherit;
         display:block;
-        width: 60%;
+        width: 50%;
         height: 50%;
         background-image: url(../images/table-text.png);
         background-size: cover;
@@ -31,14 +28,14 @@
     }
     .player-left{
         position:fixed;
-        top:60%;
+        top:65%;
         left: 20%;
     }
     .player-left span {
         position:inherit;
         display:block; 
         width:15%;
-        height:19%;
+        height:25%;
         background-image: url(../images/player.png);
         background-repeat: no-repeat;
         background-size: cover;
