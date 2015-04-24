@@ -35,11 +35,15 @@ function generateTableName() {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    createNewTable().then(function(table){
-        console.log(table) ;
+    // createNewTable().then(function(table){
+    //    console.log(table) ;
+    //    res.end("check console");
+    //});
+    findTableForMe().then(function(table){
+
+        console.log(table);
         res.end("check console");
     });
-
 
 });
 
@@ -51,6 +55,7 @@ function createNewTable(){
     var table = {
         tableName: generateTableName(),
         players:[],
+        numberOfPlayer: 0,
         dealer : null,
         stack: stack
     };
@@ -73,16 +78,39 @@ function createNewTable(){
     return deferred.promise;
 
 }
-function getAllTable(){
 
-}
 
 function getPlayer(playerId){
 
 }
 
-function findTableForMe(player){
+function findTableForMe(){
 
+    var deferred = Q.defer();
+
+    getdb("table").then(function(collection){
+
+        collection.find({ numberOfPlayer:{$lt:3}}).limit(1).toArray(function(err,tables){
+            if(err){
+                deferred.reject(new Error(err));
+            }else{
+                if(tables.length===0){
+                    //No table available. Create New 
+                    createNewTable().then(function(table){
+                        deferred.resolve(table); 
+                    });
+                }else{
+                    //Table Available
+                    deferred.resolve(tables[0]);
+                }
+            }
+        });
+
+
+    }).fail(function(err){
+        deferred.reject(new Error(err));
+    });
+    return deferred.promise;
 }
 
 module.exports = router;
