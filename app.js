@@ -5,13 +5,18 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
+var socketIo = require("socket.io");
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var game = require('./routes/game');
-
+var test = require('./routes/test');
+var databaseUrl = "mongodb://localhost:27017/blackjack";
 var app = express();
-http.createServer(app).listen(3000);
+var server = http.createServer(app);
+var io = socketIo(server);
+server.listen(3000);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -27,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/game',game);
+app.use('/test',test);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
