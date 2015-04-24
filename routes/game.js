@@ -39,10 +39,21 @@ router.get('/', function(req, res, next) {
     //    console.log(table) ;
     //    res.end("check console");
     //});
+
+
+
     findTableForMe().then(function(table){
 
-        console.log(table);
-        res.end("check console");
+        var player = { "playerId" : "1", "playerName" : "vishal", "playerMoney" : 500, "_id" : "55397f6f4632e8ff4f2a7c87" };
+        addMeToTable(player,table).then(function(newTable){
+            console.log(newTable);
+            res.end("check console");
+        });
+
+    }).fail(function(err){
+        console.log("error is here 1");
+        console.log(err);
+        res.end("Error accured");
     });
 
 });
@@ -59,6 +70,7 @@ function createNewTable(){
         dealer : null,
         stack: stack
     };
+
     getdb("table").then(function(collection) {
 
         collection.insert(table,function(err,result){
@@ -79,6 +91,42 @@ function createNewTable(){
 
 }
 
+function addMeToTable(player,table){
+
+    var deferred = Q.defer();
+
+    getdb("table").then(function(collection){
+
+        collection.find({tableName:table.tableName}).limit(1).toArray(function(err,tables){
+            if(err){
+                console.log("problem is here");
+                deferred.reject(new Error(err));
+            } else{
+
+                if(table.length===0){
+                    deferred.reject(new Error("table Not available to update"));
+                }else{
+                    tables[0].players.push(player);
+                    
+                    collection.findAndModify({tableName:tables[0].tableName},[],tables[0],{new:false},function(err,table){
+                        if(err){
+                            deferred.reject(new Error(err));
+                        }else{
+                            deferred.resolve(table.value);
+                        }
+                    });
+                }
+            }
+        });
+
+
+    }).fail(function(err){
+
+        deferred.reject(new Error(err));
+    });
+    return deferred.promise;
+}
+
 
 function getPlayer(playerId){
 
@@ -94,6 +142,7 @@ function findTableForMe(){
             if(err){
                 deferred.reject(new Error(err));
             }else{
+
                 if(tables.length===0){
                     //No table available. Create New 
                     createNewTable().then(function(table){
@@ -101,6 +150,7 @@ function findTableForMe(){
                     });
                 }else{
                     //Table Available
+
                     deferred.resolve(tables[0]);
                 }
             }
@@ -108,8 +158,10 @@ function findTableForMe(){
 
 
     }).fail(function(err){
+
         deferred.reject(new Error(err));
     });
+
     return deferred.promise;
 }
 
