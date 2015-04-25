@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+        <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+        <script src="javascripts/angular-socket.js"></script>
+
+        <script type="application/javascript">
+            var app = angular.module('example', [ 'socket.io' ]);
+
+            app.config(function ($socketProvider) {
+                $socketProvider.setConnectionUrl('http://localhost:3000');
+            });
+            app.controller('Ctrl', function Ctrl($scope, $socket) {
+                angular.element(document).ready(function () {
+                    $socket.emit("AddMe",{ "playerId" : "1", "playerName" : "vishal", "playerMoney" : 500, "_id" : "55397f6f4632e8ff4f2a7c87" });
+                });
+                $socket.on('added', function (data) {
+                    console.log(data);
+                    $scope.serverResponse = data;
+                });
+                $scope.emitBasic = function emitBasic() {
+                    $socket.emit('echo', $scope.dataToSend);
+                    $scope.dataToSend = '';
+                };
+            });
+        </script>
+    </head>
+    <body ng-app="example">
+        <div ng-controller="Ctrl">
+            <input ng-model="dataToSend">
+            <button ng-click="emitBasic()">Send</button>
+            <button ng-click="emitACK()">Send (ACK)</button>
+            <div>Server Response: {{ serverResponse }}</div>
+            <div>Server Response (ACK): {{ serverResponseACK }}</div>
+        </div>
+
+    </body>
+</html>
