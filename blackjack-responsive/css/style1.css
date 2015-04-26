@@ -6,8 +6,6 @@
     margin: 10px;
 }
 
-
-
 .three{
  
     position: relative;
@@ -89,6 +87,7 @@ span.heading{
   height:7em;
   width: inherit;
   display: inline-block;
+  color: #FFFFFF;
 }
 span.topLeftRightSpan{
   position: inherit;
@@ -107,10 +106,90 @@ span.playerName{
   display: inline-block;
 
 }
+
 span.cardHolder{
   position: inherit;
   text-align: center;
   vertical-align: middle;
   width:inherit;
-  display: inline-block;  
+  display: inline-block; 
+  padding-top: 2em; 
+}
+
+.playerMessage {
+  height: 25em !important;
+  width: 20em !important;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #FEF4E5;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.nameBox {
+  position: inherit !important;
+  vertical-align: middle !important;
+  width:inherit !important;
+  display: inline-block !important;
+  height: 15em !important;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.messageBox {
+    position:relative;
+    width: 20em;
+    border: 1px solid #ddd;
+    border-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.sendBtn {
+    position:absolute;
+    top: 3px;
+    right:3px;
+    width: 60px;
+}
+.messageLines {
+  color:#666;
+  font-size:14px;
+  background-color: rgba(0, 0, 0, 0.5);
+  -moz-border-radius: 3px; -webkit-border-radius: 3px;
+  margin:5px 0px 10px 0px;
+  padding:5px;
+  width:350px;
+  border:#999 1px solid;
+  transition: all 0.25s ease-in-out;
+  -webkit-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  box-shadow: 0 0 5px rgba(81, 203, 238, 0);
+  -webkit-box-shadow: 0 0 5px rgba(81, 203, 238, 0);
+  -moz-box-shadow: 0 0 5px rgba(81, 203, 238, 0);
+    position: relative;
+    border: none;
+    width: 210px;
+    resize: none
+}
+
+.messageLines:focus {
+  color:#000000;
+  outline:none;
+  border:#35a5e5 1px solid;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  -webkit-box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  -moz-box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+}
+
+.enternameBox {
+  height: 2em !important;
+  width: 8em !important;
+  float: left !important;
+  background-color: rgba(255, 255, 255, 0.4);
+  color: black !important;
+}
+
+h5 {
+  color: #FFFFFF;
+  text-align: center;
+}
+
+.glyphicon-menu-right {
+float: center;
 }
