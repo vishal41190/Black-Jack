@@ -1,0 +1,116 @@
+.three, .one, .two, .four{
+    height:200px;
+    width:200px;    
+    border-style: solid;
+    border-width: 1px;
+    margin: 10px;
+}
+
+
+
+.three{
+ 
+    position: relative;
+    left: 200px;
+    border-color:red;
+
+}
+
+.one {
+  
+  border-color:green;
+}
+
+.two {
+  position: relative;
+    left: 100px;
+  border-color:blue;
+}
+
+.four {
+ 
+  border-color:black;
+}
+
+
+
+.textstyle{
+  font-family: 'Lobster', cursive; font-weight: 200;font-size: 22px;
+}
+
+/*the following code for no borders for bottom table results*/
+/*http://stackoverflow.com/questions/8875367/remove-row-lines-in-twitter-bootstrap*/
+
+/*table.table, .table td { 
+     border-top: none !important; 
+ }
+ --> */
+
+/*select any td element that is a child of any element with a class name of "result" */
+ .result td{ 
+     border: none !important; 
+ }
+
+ .result {
+  position:relative;
+  left:-150px;
+ }
+
+
+/*Select any table element that has a class name of "result" */
+table.table.result{ 
+     border: none !important; 
+ }
+
+
+ .scores{
+ 
+    position: relative;
+    left: 60px;
+
+}
+
+
+ 
+  #test {
+    /*margin: 0 auto; */
+    border: 20px; /* or margin: 0 auto 0 auto */
+  }
+
+.makingmiddle{
+  
+    width: 50%; margin: 35px auto;
+}
+
+
+span.heading{
+  position: inherit;
+  text-align: center;
+  height:7em;
+  width: inherit;
+  display: inline-block;
+}
+span.topLeftRightSpan{
+  position: inherit;
+  height: 15em;
+  width:inherit;
+  display:inline-block;
+
+}
+
+span.playerName{
+  position:relative;
+  text-align: center;
+  vertical-align: middle;
+  height:2em;
+  width: inherit;
+  display: inline-block;
+
+}
+span.cardHolder{
+  position: inherit;
+  text-align: center;
+  vertical-align: middle;
+  width:inherit;
+  display: inline-block;  
+}
