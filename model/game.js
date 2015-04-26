@@ -28,7 +28,7 @@ function createNewTable(){
         tableName: generateTableName(),
         players:[],
         numberOfPlayer: 0,
-        dealer : {opencards:[],blindedCard:[]},
+        dealer : {opencards:[],blindedCard:[],total1:0,total2:0},
         stack: stack,
         stackIndex:0
     };

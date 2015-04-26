@@ -218,6 +218,9 @@ function getCardJSON(x){
         value1=10;
         value2=null;
     }
+    else if(char === "1"){
+        value1=10;
+    }
     else{
         value1=parseInt(char);
         value2=null;
@@ -233,17 +236,33 @@ function removePlayerFromTable(playerId){
 
         tables[tableIndex].players.splice(elementPos,1);
         tables[tableIndex].numberOfPlayer = tables[tableIndex].numberOfPlayer-1;
-        
+
     }
 };
 function updateTotal(table){
-    for(var i=0; i<table.players;i++){
-        
+    for(var i=0; i<table.players.length;i++){
+        var total1=0;
+        var total2=0;
+        for(var j= 0;j<table.players[i].cards.length;j++){
+            total1 = total1 + table.players[i].cards[j].value1;
+            total2 = total2 + table.players[i].cards[j].value2;
+        }
+        table.players[i].total1= total1;
+        console.log(total1);
+        table.players[i].total2 = total2;
+        console.log(total2);
     }
+    var dealerTotal1=0;
+    var dealerTotal2=0;
+    for(var k =0; k<table.dealer.opencards.length;k++){
+        dealerTotal1=dealerTotal2+table.dealer.opencards[k].value1;
+        dealerTotal2=dealerTotal2+table.dealer.opencards[k].value2;
+    }
+    table.dealer.total1=dealerTotal1;
+    table.dealer.total2=dealerTotal2;
 }
 function deal(player,table){
-    console.log("give first card to player");
-    console.log(table);
+
     player.cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
     table.stackIndex=table.stackIndex+1;
     var temp=1;
@@ -253,25 +272,25 @@ function deal(player,table){
             temp=0;   
         }
     }
-    console.log(table);
+
     //All player has atlease one card
     if(temp===1){
 
-        console.log("if dealer has no card give dealer a first card");
-        console.log(table.dealer.opencards.length);
+        //if dealer has no card give dealer a first card
+
         if(table.dealer.opencards.length<1){
 
             table.dealer.opencards.push(getCardJSON(table.stack.cards[table.stackIndex]));
             table.stackIndex=table.stackIndex+1;
 
-            console.log("give all player a second card");
-            console.log(table);
+            //give all player a second card
+
             for(var j=0;j<table.players.length;j++){
                 table.players[j].cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
                 table.stackIndex=table.stackIndex+1;
             }
-            console.log("give dealer a second card");
-            console.log(table);
+            //give dealer a second card
+
             table.dealer.blindedCard.push(getCardJSON(table.stack.cards[table.stackIndex]));
             table.stackIndex=table.stackIndex+1;
 
@@ -285,31 +304,32 @@ function deal(player,table){
         //wait for all player to select deal
 
     }
+    updateTotal(table);
 }
 
 io.on("connection",function(sct){
     console.log("connected");
-   
+
     sct.on("disconnect",function(){
         var playerId = playerSocket[sct];
         console.log("disconnecting");
         removePlayerFromTable(playerId);
         delete sockets[playerId];
         delete playerSocket[sct];
-         removeEmptyTable();
+        removeEmptyTable();
 
     });
     sct.on("AddMe",function(data){
         var player;
         var table =findPlayerTable(data.playerId);
-        console.log("table");
-        console.log(table);
+
         if(table===null){
             table= game.findTableForMe(tables);
             player = JSON.parse(JSON.stringify(data));
             player.cards =[];
             player.status="waiting";
-            player.total =0;
+            player.total1 =0;
+            player.total2 = 0;
             sockets[player.playerId]=sct;
             playerSocket[sct]=player.playerId;
             game.addMeToTable(player,table);
