@@ -23,12 +23,14 @@ function createNewTable(){
     var stack = new stackModel.Stack();
     stack.makeDeck(2);
     stack.shuffle(5);
+   // console.log(stack);
     var table = {
         tableName: generateTableName(),
         players:[],
         numberOfPlayer: 0,
-        dealer : null,
-        stack: stack
+        dealer : {opencards:[],blindedCard:[]},
+        stack: stack,
+        stackIndex:0
     };
 
     
@@ -48,7 +50,7 @@ function getPlayer(playerId){
 }
 
 exports.findTableForMe=function(tables){
-
+    
     var temp = tables.filter(function(item){
         return item.numberOfPlayer < 3;
     });

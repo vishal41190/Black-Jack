@@ -29,7 +29,7 @@ stackMakeDeck=function(n) {
   for (i = 0; i < n; i++)
     for (j = 0; j < suits.length; j++)
       for (k = 0; k < ranks.length; k++)
-        this.cards[i * m + j * ranks.length + k] = ranks[k]+suits[j];
+        this.cards[i * m + j * ranks.length + k] = suits[j]+ranks[k];
       //    new Card(ranks[k], suits[j]);
 }
 stackShuffle=function(n) {

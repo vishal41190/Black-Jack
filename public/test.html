@@ -15,12 +15,13 @@
                 angular.element(document).ready(function () {
                     $socket.emit("AddMe",{ "playerId" : "1", "playerName" : "vishal", "playerMoney" : 500, "_id" : "55397f6f4632e8ff4f2a7c87" });
                 });
-                $socket.on('added', function (data) {
+                $socket.on('update', function (data) {
                     console.log(data);
                     $scope.serverResponse = data;
                 });
-                $scope.emitBasic = function emitBasic() {
-                    $socket.emit('echo', $scope.dataToSend);
+                
+                $scope.deal = function emitBasic() {
+                    $socket.emit('deal', "1");
                     $scope.dataToSend = '';
                 };
             });
@@ -30,7 +31,7 @@
         <div ng-controller="Ctrl">
             <input ng-model="dataToSend">
             <button ng-click="emitBasic()">Send</button>
-            <button ng-click="emitACK()">Send (ACK)</button>
+            <button ng-click="deal()">Deal</button>
             <div>Server Response: {{ serverResponse }}</div>
             <div>Server Response (ACK): {{ serverResponseACK }}</div>
         </div>
