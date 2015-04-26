@@ -248,9 +248,8 @@ function updateTotal(table){
             total2 = total2 + table.players[i].cards[j].value2;
         }
         table.players[i].total1= total1;
-        console.log(total1);
         table.players[i].total2 = total2;
-        console.log(total2);
+    
     }
     var dealerTotal1=0;
     var dealerTotal2=0;
@@ -356,6 +355,13 @@ io.on("connection",function(sct){
             var liveTable = getLiveTable(playerId,tableIndex);
             sendUpdateToAllPlayer(liveTable,tables[tableIndex]);
 
+        });
+        
+        
+        sct.on("deal",function(data){
+            var playerId=data;
+            
+            
         });
 
 
