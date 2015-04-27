@@ -20,9 +20,14 @@
                     $scope.serverResponse = data;
                 });
                 
-                $scope.deal = function emitBasic() {
+                $scope.deal = function() {
                     $socket.emit('deal', "1");
                     $scope.dataToSend = '';
+                };
+                $scope.hit = function hit(){
+                    
+                  $socket.emit("hit","1");  
+                    
                 };
             });
         </script>
@@ -30,7 +35,7 @@
     <body ng-app="example">
         <div ng-controller="Ctrl">
             <input ng-model="dataToSend">
-            <button ng-click="emitBasic()">Send</button>
+            <button ng-click="hit()">Hit</button>
             <button ng-click="deal()">Deal</button>
             <div>Server Response: {{ serverResponse }}</div>
             <div>Server Response (ACK): {{ serverResponseACK }}</div>

@@ -156,10 +156,12 @@ var liveTable={
     dealer:{opencards:[],blindedCard:"",total:10}
 };
 
-function sendUpdateToAllPlayer(liveTbl,table){
+function sendUpdateToAllPlayer(tableIndex){
     // console.log(table);
-    var players = table.players;
+    var players = tables[tableIndex].players;
+    var liveTbl;
     for(var i =0 ;i < players.length ; i++){
+        liveTbl = getLiveTable(players[i].playerId,tableIndex);
         sockets[players[i].playerId].emit("update",liveTbl);
 
     }
@@ -216,14 +218,15 @@ function getCardJSON(x){
     }
     else if(char==="J" || char === "Q" || char === "K"){
         value1=10;
-        value2=null;
+        value2=10;
     }
-    else if(char === "1"){
+    else if(char === "0"){
         value1=10;
+        value2=10;
     }
     else{
         value1=parseInt(char);
-        value2=null;
+        value2=parseInt(char);
     }
     return {card:x,value1:value1,value2:value2};
 }
@@ -249,7 +252,7 @@ function updateTotal(table){
         }
         table.players[i].total1= total1;
         table.players[i].total2 = total2;
-    
+
     }
     var dealerTotal1=0;
     var dealerTotal2=0;
@@ -260,8 +263,49 @@ function updateTotal(table){
     table.dealer.total1=dealerTotal1;
     table.dealer.total2=dealerTotal2;
 }
-function deal(player,table){
 
+function checkPlayerTotal(table){
+    for(var i=0;i<table.players.length;i++){
+        var total;
+        if(table.players[i].total1>=table.players[i].total2){
+            //total1 > total2
+            if(table.players[i].total1>21){
+                //total1 > 21
+                if(table.players[i].total2!=0){
+                    //total2 ! = null  
+                    total=table.players[i].total2;
+                    console.log("total updated 1: "+total);
+                }else{
+                    // total2 === null
+                    total = table.players[i].total1;
+                    console.log("total updated 2: "+total);
+                }
+            }else{
+                // total 1 > total 2 and <21
+                total = table.players[i].total1;
+                console.log("total updated 3: "+total);
+            }
+
+        }else{
+            // total2 > total1
+            if(table.players[i].total2>21){
+                // total 2 > 21 
+                total = table.players[i].total1;
+                console.log("total updated 3: "+total);
+            }else{
+                total = table.players[i].total2;
+                console.log("total updated 4: "+total);
+            }
+
+        }
+        console.log(total);
+        if(total>21){
+            table.players[i].status = "lose"
+        }
+    }
+}
+function deal(player,table){
+    player.status="deal";
     player.cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
     table.stackIndex=table.stackIndex+1;
     var temp=1;
@@ -306,6 +350,22 @@ function deal(player,table){
     updateTotal(table);
 }
 
+function hit(player,table){
+
+    player.status="hit";
+
+    player.cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
+    table.stackIndex=table.stackIndex+1;
+
+    updateTotal(table);
+
+    checkPlayerTotal(table);
+
+}
+
+
+
+
 io.on("connection",function(sct){
     console.log("connected");
 
@@ -338,11 +398,11 @@ io.on("connection",function(sct){
             player = findPlayer(data.playerId);
 
         }
-        var liveTable=getLiveTable(player.playerId,findTableIndex(table.tableName));
+        //  var liveTable=getLiveTable(player.playerId,findTableIndex(table.tableName));
         // console.log(tables[0].players[0]);
         var tableIndex = findPlayerTable(player.playerId);
 
-        sendUpdateToAllPlayer(liveTable,tables[tableIndex]);
+        sendUpdateToAllPlayer(tableIndex);
         //io.socket(sct.id).emit("added",liveTable);
         //sct.emit("added",liveTable);  
         sct.on("deal",function(data){
@@ -352,16 +412,21 @@ io.on("connection",function(sct){
             var player = findPlayer(playerId);
 
             deal(player,tables[tableIndex]);
-            var liveTable = getLiveTable(playerId,tableIndex);
-            sendUpdateToAllPlayer(liveTable,tables[tableIndex]);
+            //   var liveTable = getLiveTable(playerId,tableIndex);
+            sendUpdateToAllPlayer(tableIndex);
 
         });
-        
-        
-        sct.on("deal",function(data){
+
+
+        sct.on("hit",function(data){
             var playerId=data;
-            
-            
+            var tableIndex = findPlayerTable(playerId);
+            var player = findPlayer(playerId);
+
+            hit(player,tables[tableIndex]);
+            // var liveTable = getLiveTable(playerId,tableIndex);
+            sendUpdateToAllPlayer(tableIndex);
+
         });
 
 
