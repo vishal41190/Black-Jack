@@ -1,0 +1,303 @@
+/* Background images from http://unleashfitnesstraining.com/ 
+and http://photobucket.com */
+body {
+  background-image: url("../img/wood.png");
+}
+
+/* =========== Bootstrappy overrides ========== */
+
+.table {
+  margin-top: 18px;
+  padding-bottom: 25px;
+  padding-top: 40px;
+  border-radius: 20px;
+  background-color: #ededed;
+  display: table;
+  background-image: url("../img/pool.png");
+  text-align: center;
+}
+
+.label-top, .label-bottom {
+  font-size: 16px;
+  color: antiqueWhite;
+  font-weight: bold;
+}
+
+.table .label-top {
+  margin-top: -30px;
+  margin-bottom: 10px;
+}
+
+.table .label-bottom {
+  margin-bottom: -13px;
+  margin-top: -10px;
+}
+.btn.disabled {
+  background-color: #E6E6E6;
+  color: gray;
+}
+
+.btn-toolbar .btn-group.rect {
+  top: -20px;
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+.bet.disabled .btn {
+  cursor: default;
+  background-image: none;
+  background-color: #E6E6E6;
+  color: gray;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.row {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 1.5em 0;
+  position: relative;
+  clear: both;  
+}
+
+.btn {
+  font-size: 18px;
+}
+
+.alert {
+  text-align: center;
+  font-size: 28px;
+  padding-bottom: 18px;
+  padding-top: 15px;
+  border-radius: 15px;
+}
+
+.alert.none {
+  background-color: transparent;
+  border: none;
+}
+
+/* =========== Cards ========== */
+
+.cards {
+  width: 175px;
+  margin: 0 auto;
+  display: inline-block;
+}
+
+
+.cards .left .right {
+
+}
+    
+.dealer{
+  height: 10em;
+}
+.player{
+  height:10em;
+}
+
+.card {
+  width: 75px;
+  height: 100px;
+  border: 1px solid #666;
+  position: relative;
+  background-color: white;
+  box-shadow: .2em .2em .5em #333;
+  font-family: Monaco, Lucida Sans Unicode, sans-serif;
+  margin-left: -52px;
+  -moz-box-shadow: .2em .2em .5em #333;
+  -webkit-box-shadow: .2em .2em .5em #333;
+  -webkit-border-radius: .3em;
+}
+.card.back {
+  text-indent: -4000px;
+  background-color: #CCC;
+  background-repeat: repeat;
+  background-image: url(data:image/gif;base64,R0lGODlhJAAkAJEAAOjFsezdztOKbL5QKCH5BAAAAAAALAAAAAAkACQAAAL/HC4RAqm/mmLHyHmAbczB11Ea8ombJKSgKo6Z17pXFznmS1JptiX0z3vVhpEKDoUIkoa0olGIUeZUk1RI6Yn2mh/FDAt6frOrRRTqXPpsVLYugzxaVy+YcBdnoWPZOT0E4eckQtZFZBjWoHixQFWl6Nhol6R2p1Okt5TGaEWZA6fjiMdhZgPHeWrTWGVq+jTZg1HYyAEWKLYzmyiGKoUimilz+YYryyTlg5RcDJSAbNx0Q7lMcbIGEyzTK8zVdfVaImzs/QV+prYqWWW2ObkoOApM/Em/rUlIm7fijs8a2EEKEaZ3AsMUgneEU6RcpJbZ27aGHkAO2Ors8xQH1IR0Bn5YnOtVAAA7);
+}
+.card.diams .suit:after {
+    content: "\2666";
+    right: .4em;
+}
+.card.hearts .suit:after {
+    content: "\2665";
+    right: .35em;
+}
+.card.spades .suit:after {
+    content: "\2660";
+    right: .35em;
+}
+.card.clubs .suit:after {
+    content: "\2663";
+    right: .3em;
+}
+.card .suit:after {
+    font-family: Georgia, serif;
+    position: absolute;
+    font-size: 3.5em;
+    top: -2px;
+    word-spacing: normal;
+    letter-spacing: normal;
+    line-height: 1;
+    left: 10px;
+}
+
+.spades, .clubs {
+  color: black;
+}
+
+.hearts, .diams {
+  color: red;
+}
+
+.rank {
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  font-size: 23px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.suit {
+  position: relative;
+  top: 24px;
+  right: 26px;
+  font-size: 17px; 
+  font-family: Monaco, Lucida Sans Unicode, sans-serif;
+}
+
+/* =========== Chips ========== */
+.chip-container {
+  position: fixed;
+  width: 100%;
+  height: 230px;
+  z-index: 1000;
+}
+.chip-container .chip:active, .chip-container .chip:hover {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  cursor: default;  
+}
+.dealer .stack-o-chips {
+  position: relative;
+  float: right;
+  right: 86px; /*149px;*/
+  top: 63px;
+}
+.player-total .stack-o-chips {
+  position: relative;
+  float: left;
+  top: 274px;
+  left: 40px;
+}
+.player-bet .stack-o-chips {
+  position: relative;
+  float: right;
+  right: 89px;
+  top: 274px;
+}
+.chip span {
+  position: relative;
+  top: -7px;
+}
+.stack-o-chips .chip {
+  margin-top: -57px;
+  position: relative;
+}
+.stack-o-chips .chip1 {
+  left: 0px;
+}
+.stack-o-chips .chip2 {
+  right: 13px;
+  top: 3px;
+}
+.stack-o-chips .chip3 {
+  left: 10px;
+  top: 7px;
+}
+
+/*http://www.cssbutton.me */
+.chip {
+    background: #414141;
+    -webkit-box-shadow: 1px 1px #7a7a7a inset;
+    -moz-box-shadow: 1px 1px #7a7a7a inset;
+    box-shadow: 1px 1px #7a7a7a inset;
+    -webkit-border-radius: 75px;
+    -moz-border-radius: 75px;
+    border-radius: 75px;
+    -webkit-transition: 0 5s 0;
+    -moz-transition: 0 5s 0;
+    -o-transition: 0 5s 0;
+    transition: 0 5s 0;
+    padding: 24px 11px;
+    display: block;
+    border-color: #e6e6e6;
+    border-width: 6px;
+    border-style: dashed;
+    text-transform: uppercase;
+    text-align: center;
+    font-family: SF;
+    font-size: 20px;
+    color: #e3e3e3;
+    font-weight: bold;
+    font-style: normal;
+    width: 30px;
+    height: 2px;
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(4px);
+    margin-bottom: 10px;
+}
+.chip:hover {
+  -webkit-box-shadow: 0px 0px 10px #a3a3a3, 1px 1px #7a7a7a inset;
+  -moz-box-shadow: 0px 0px 10px #a3a3a3, 1px 1px #7a7a7a inset;
+  box-shadow: 0px 0px 10px #a3a3a3, 1px 1px #7a7a7a inset;
+  -webkit-transform: rotate(-10deg);
+  -moz-transform: rotate(-10deg);
+  transform: rotate(-10deg);
+  cursor: pointer;
+  text-decoration: none;
+  color: #e3e3e3;
+}
+.chip.active, .chip:active {
+  -webkit-box-shadow:0 0 15px #ffffff; 
+  -moz-box-shadow: 0 0 15px #ffffff; 
+  box-shadow:0 0 15px #ffffff; 
+}
+.bet.disabled .chip, .chip.disabled {
+  opacity: 0.65;
+  cursor: default;
+  text-decoration: none;
+  color: #e3e3e3;
+  -webkit-transform: none;
+  -moz-transform: none;
+  transform: none;
+  -webkit-box-shadow: none; 
+  -moz-box-shadow: none; 
+  box-shadow: none;  
+}
+
+/* =========== Misc ========== */
+
+.alert-container {
+  height: 55px;
+}
+
+.hand {
+  top: -100px;
+  height: 100px;
+}
+
+.controls {
+  text-align: center;
+}
+
+#paypal {
+  text-align: center;
+}
