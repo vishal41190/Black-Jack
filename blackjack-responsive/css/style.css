@@ -29,8 +29,8 @@ table tr td,th{
 
 span.a {
   position: inherit;
-   width: 73px;
-  height: 97px;
+   width: 5em;
+  height: 6.96em;
   background-image: url(../images/cards.png);
   opacity: 1;
   display: inline-block;
@@ -38,8 +38,8 @@ span.a {
 
 span.a-half{
      position: inherit;
-   width: 16px;
-  height: 97px;
+   width: 1em;
+  height: 6.96em;
   background-image: url(../images/cards.png);
   opacity: 1;
   display: inline-block;
@@ -47,8 +47,8 @@ span.a-half{
 
 span.b {
 position: inherit;
-   width: 73px;
-  height: 97px;
+   width: 5em;
+  height: 6.96em;
   background-image: url(../images/closedcard.jpg);
   background-size: 100% 100%;
   opacity: 1;
