@@ -85,11 +85,11 @@ function getPlayer(players,plId){
     return temp[0];
 }
 function getOtherPlayer(players,plId){
-    
+
     var temp = players.filter(function(items){
         return items.playerId != plId;
     });
- 
+
     return temp;
 }
 
@@ -104,7 +104,7 @@ function getLiveTable(playerId,tableIndex){
     temp.tableName=tbl.tableName;
     temp.player = getPlayer(tbl.players,playerId);
     temp.otherPlayer = getOtherPlayer(tbl.players,playerId);
-    
+
     temp.dealer = tbl.dealer;
 
     return temp;
@@ -197,7 +197,7 @@ function findPlayerTable(playerId){
 
 function removeEmptyTable(){
     for(var i =0; i<tables.length;i++){
-       
+
         if(tables[i].numberOfPlayer===0){
             tables.splice(i,1);
             console.log("Empty table removed");
@@ -294,23 +294,97 @@ function checkPlayerTotal(table){
         }
     }
 }
+function checkDealerTotal(table){
+    var total=0;
+    if(table.dealer.total1>=table.dealer.total2){
+        //total1 > total2
+        if(table.dealer.total1>21){
+            //total1 > 21
+            if(table.dealer.total2!=0){
+                //total2 ! = null  
+                total=table.dealer.total2;
+            }else{
+                // total2 === null
+                total = table.dealer.total1;
+            }
+        }else{
+            // total 1 > total 2 and <21
+            total = table.dealer.total1;
+        }
+
+    }else{
+        // total2 > total1
+        if(table.dealer.total2>21){
+            // total 2 > 21 
+            total = table.dealer.total1;
+        }else{
+            total = table.dealer.total2;
+        }
+    }
+    return total;
+}
+function checkFinalTotal(table){
+    checkPlayerTotal(table);
+    var dTotal = checkDealerTotal(table);
+    console.log(dTotal);
+    if(dTotal > 21){
+        for(var i =0; i <table.players.length;i++){
+           console.log( table.players[i].status);
+            if(table.players[i].status==="stand") {
+                table.players[i].status="win";
+            }
+        }
+    }else{
+        for(var i=0;i<table.players.length;i++){
+            var total;
+            if(table.players[i].total1>=table.players[i].total2){
+                //total1 > total2
+                if(table.players[i].total1>21){
+                    //total1 > 21
+                    if(table.players[i].total2!=0){
+                        //total2 ! = null  
+                        total=table.players[i].total2;
+                    }else{
+                        // total2 === null
+                        total = table.players[i].total1;
+                    }
+                }else{
+                    // total 1 > total 2 and <21
+                    total = table.players[i].total1;
+                }
+
+            }else{
+                // total2 > total1
+                if(table.players[i].total2>21){
+                    // total 2 > 21 
+                    total = table.players[i].total1;
+                }else{
+                    total = table.players[i].total2;
+                }
+            }
+            if(total<dTotal){
+                table.players[i].statue = "lose";
+            }
+        }
+    }
+}
 function deal(player,table){
     player.status="deal";
     player.cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
     table.stackIndex=table.stackIndex+1;
     var temp=1;
-    
-   
+
+
     //check if all players has atlease 1 card
     for(var i =0 ; i<table.players.length;i++){
-       
+
         if(table.players[i].cards.length<1){
-            
+
             temp=0; 
             break;
         }
     }
-    
+
     //All player has atlease one card
     if(temp===1){
 
@@ -354,8 +428,68 @@ function hit(player,table){
 
     updateTotal(table);
 
-    checkPlayerTotal(table);
+    var dTotal =  checkFinalTotal(table);
 
+}
+
+function stand(player,table){
+
+    player.status="stand";
+    var tableIndex = findPlayerTable(player.playerId);
+    temp=1;
+    for(var i =0 ;i < table.players.length;i++){
+        if(table.players[i].status==="hit"){
+            temp=0;
+            break;
+        }
+    }
+
+    if(temp===0){
+        //One player has hit.
+        //Wait for other players to select stand
+    }else{
+        //All players have selected stand
+        //Open dealers card.
+
+        if(table.dealer.blindedCard.length>0){
+
+            table.dealer.openCards.push(table.dealer.blindedCard[0]);
+            table.dealer.blindedCard.splice(0,1);
+
+            var checkPoint = true;
+            while(checkPoint){
+
+                updateTotal(table);
+                checkFinalTotal(table);
+                sendUpdateToAllPlayer(tableIndex);
+                var temp1=1;
+                for(var j =0 ; table.players.length;j++){
+                    if(table.players[j].status==="stand"){
+                        temp1=0;
+                        break;
+                    }
+                }
+
+
+                if(temp1===0){
+                    console.log("player still standing");
+                    //Some player is still standing
+                    table.dealer.openCards.push(getCardJSON(table.stack.cards[table.stackIndex]));
+                    table.stackIndex=table.stackIndex+1;
+
+
+                }
+                else{
+                    checkPoint=false;
+                }
+            }
+
+        }
+
+
+
+
+    }
 }
 
 
@@ -365,20 +499,20 @@ io.on("connection",function(sct){
     console.log("connected");
     var playerId;
     sct.on("disconnect",function(){
-       
+
         console.log("disconnecting"+playerId);
         var tableIndex = findPlayerTable(playerId);
         removePlayerFromTable(playerId);
         delete sockets[playerId];
         delete playerSocket[sct];
-         sendUpdateToAllPlayer(tableIndex);
+        sendUpdateToAllPlayer(tableIndex);
         removeEmptyTable();
-       
-        
+
+
 
     });
     sct.on("deal",function(data){
-        
+
         playerId=data;
         var tableIndex = findPlayerTable(playerId);
 
@@ -399,13 +533,18 @@ io.on("connection",function(sct){
         sendUpdateToAllPlayer(tableIndex);
 
     });
-
+    sct.on("stand",function(data){
+        playerId=data;
+        var tableIndex=findPlayerTable(playerId);
+        var player = findPlayer(playerId);
+        stand(player,tables[tableIndex]);
+    });
 
     sct.on("AddMe",function(data){
         var player;
         playerId=data.playerId;
         var table =findPlayerTable(data.playerId);
-       
+
         if(table===null){
             console.log("table is null");
             table= game.findTableForMe(tables);
@@ -414,9 +553,9 @@ io.on("connection",function(sct){
             if(table.dealer.openCards.length>0){
                 player.status="standby"
             }else{
-                 player.status="waiting";
+                player.status="waiting";
             }
-           
+
             player.total1 =0;
             player.total2 = 0;
             sockets[player.playerId]=sct;
@@ -425,7 +564,7 @@ io.on("connection",function(sct){
 
         }
         else{
-            
+
             //console.log(table);
             player = findPlayer(data.playerId);
 
@@ -435,7 +574,7 @@ io.on("connection",function(sct){
         var tableIndex = findPlayerTable(player.playerId);
 
         sendUpdateToAllPlayer(tableIndex);
-       
+
         //io.socket(sct.id).emit("added",liveTable);
         //sct.emit("added",liveTable);   
 
