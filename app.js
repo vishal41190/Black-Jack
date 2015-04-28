@@ -85,9 +85,11 @@ function getPlayer(players,plId){
     return temp[0];
 }
 function getOtherPlayer(players,plId){
+    
     var temp = players.filter(function(items){
-        items.playerId!= plId;
+        return items.playerId != plId;
     });
+ 
     return temp;
 }
 
@@ -102,6 +104,7 @@ function getLiveTable(playerId,tableIndex){
     temp.tableName=tbl.tableName;
     temp.player = getPlayer(tbl.players,playerId);
     temp.otherPlayer = getOtherPlayer(tbl.players,playerId);
+    
     temp.dealer = tbl.dealer;
 
     return temp;
@@ -153,7 +156,7 @@ var liveTable={
     tableName:"afsf",
     otherPlayer:[],
     player:{ cards:[], status:"", total:3},
-    dealer:{opencards:[],blindedCard:"",total:10}
+    dealer:{openCards:[],blindedCard:"",total:10}
 };
 
 function sendUpdateToAllPlayer(tableIndex){
@@ -178,29 +181,23 @@ function getPlayerFromTable(table,playerId){
 };
 
 function findPlayerTable(playerId){
-
-    var table = tables.filter(function(table){
-
-        return table.players.filter(function(player){
-
+    var player;
+    for(var i =0 ; i < tables.length ; i++){
+        player = tables[i].players.filter(function(player){
             return player.playerId==playerId;
         });
-    });
-
-    if(table.length<1){
-        return null;
+        if(player.length>0){
+            return i;
+        }
     }
-    else{
-        var elementPos = tables.map(function(x) {return x.tableName; }).indexOf(table[0].tableName);
+    return null;
 
-        return elementPos;
-    }
+
 }
 
 function removeEmptyTable(){
     for(var i =0; i<tables.length;i++){
-        console.log("numberOfPlayer");
-        console.log(tables[i].numberOfPlayer);
+       
         if(tables[i].numberOfPlayer===0){
             tables.splice(i,1);
             console.log("Empty table removed");
@@ -256,9 +253,9 @@ function updateTotal(table){
     }
     var dealerTotal1=0;
     var dealerTotal2=0;
-    for(var k =0; k<table.dealer.opencards.length;k++){
-        dealerTotal1=dealerTotal2+table.dealer.opencards[k].value1;
-        dealerTotal2=dealerTotal2+table.dealer.opencards[k].value2;
+    for(var k =0; k<table.dealer.openCards.length;k++){
+        dealerTotal1=dealerTotal2+table.dealer.openCards[k].value1;
+        dealerTotal2=dealerTotal2+table.dealer.openCards[k].value2;
     }
     table.dealer.total1=dealerTotal1;
     table.dealer.total2=dealerTotal2;
@@ -274,16 +271,13 @@ function checkPlayerTotal(table){
                 if(table.players[i].total2!=0){
                     //total2 ! = null  
                     total=table.players[i].total2;
-                    console.log("total updated 1: "+total);
                 }else{
                     // total2 === null
                     total = table.players[i].total1;
-                    console.log("total updated 2: "+total);
                 }
             }else{
                 // total 1 > total 2 and <21
                 total = table.players[i].total1;
-                console.log("total updated 3: "+total);
             }
 
         }else{
@@ -291,14 +285,10 @@ function checkPlayerTotal(table){
             if(table.players[i].total2>21){
                 // total 2 > 21 
                 total = table.players[i].total1;
-                console.log("total updated 3: "+total);
             }else{
                 total = table.players[i].total2;
-                console.log("total updated 4: "+total);
             }
-
         }
-        console.log(total);
         if(total>21){
             table.players[i].status = "lose"
         }
@@ -309,21 +299,26 @@ function deal(player,table){
     player.cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
     table.stackIndex=table.stackIndex+1;
     var temp=1;
+    
+   
     //check if all players has atlease 1 card
     for(var i =0 ; i<table.players.length;i++){
-        if(table.players[i].cards.length<0){
-            temp=0;   
+       
+        if(table.players[i].cards.length<1){
+            
+            temp=0; 
+            break;
         }
     }
-
+    
     //All player has atlease one card
     if(temp===1){
 
         //if dealer has no card give dealer a first card
 
-        if(table.dealer.opencards.length<1){
+        if(table.dealer.openCards.length<1){
 
-            table.dealer.opencards.push(getCardJSON(table.stack.cards[table.stackIndex]));
+            table.dealer.openCards.push(getCardJSON(table.stack.cards[table.stackIndex]));
             table.stackIndex=table.stackIndex+1;
 
             //give all player a second card
@@ -368,25 +363,60 @@ function hit(player,table){
 
 io.on("connection",function(sct){
     console.log("connected");
-
+    var playerId;
     sct.on("disconnect",function(){
-        var playerId = playerSocket[sct];
-        console.log("disconnecting");
+       
+        console.log("disconnecting"+playerId);
+        var tableIndex = findPlayerTable(playerId);
         removePlayerFromTable(playerId);
         delete sockets[playerId];
         delete playerSocket[sct];
+         sendUpdateToAllPlayer(tableIndex);
         removeEmptyTable();
+       
+        
 
     });
+    sct.on("deal",function(data){
+        
+        playerId=data;
+        var tableIndex = findPlayerTable(playerId);
+
+        var player = findPlayer(playerId);
+
+        deal(player,tables[tableIndex]);
+        //   var liveTable = getLiveTable(playerId,tableIndex);
+        sendUpdateToAllPlayer(tableIndex);
+
+    });
+    sct.on("hit",function(data){
+        playerId=data;
+        var tableIndex = findPlayerTable(playerId);
+        var player = findPlayer(playerId);
+
+        hit(player,tables[tableIndex]);
+        // var liveTable = getLiveTable(playerId,tableIndex);
+        sendUpdateToAllPlayer(tableIndex);
+
+    });
+
+
     sct.on("AddMe",function(data){
         var player;
+        playerId=data.playerId;
         var table =findPlayerTable(data.playerId);
-
+       
         if(table===null){
+            console.log("table is null");
             table= game.findTableForMe(tables);
             player = JSON.parse(JSON.stringify(data));
             player.cards =[];
-            player.status="waiting";
+            if(table.dealer.openCards.length>0){
+                player.status="standby"
+            }else{
+                 player.status="waiting";
+            }
+           
             player.total1 =0;
             player.total2 = 0;
             sockets[player.playerId]=sct;
@@ -395,6 +425,8 @@ io.on("connection",function(sct){
 
         }
         else{
+            
+            //console.log(table);
             player = findPlayer(data.playerId);
 
         }
@@ -403,32 +435,9 @@ io.on("connection",function(sct){
         var tableIndex = findPlayerTable(player.playerId);
 
         sendUpdateToAllPlayer(tableIndex);
+       
         //io.socket(sct.id).emit("added",liveTable);
-        //sct.emit("added",liveTable);  
-        sct.on("deal",function(data){
-            var playerId=data;
-            var tableIndex = findPlayerTable(playerId);
-
-            var player = findPlayer(playerId);
-
-            deal(player,tables[tableIndex]);
-            //   var liveTable = getLiveTable(playerId,tableIndex);
-            sendUpdateToAllPlayer(tableIndex);
-
-        });
-
-
-        sct.on("hit",function(data){
-            var playerId=data;
-            var tableIndex = findPlayerTable(playerId);
-            var player = findPlayer(playerId);
-
-            hit(player,tables[tableIndex]);
-            // var liveTable = getLiveTable(playerId,tableIndex);
-            sendUpdateToAllPlayer(tableIndex);
-
-        });
-
+        //sct.emit("added",liveTable);   
 
 
     });

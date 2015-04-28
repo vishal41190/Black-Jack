@@ -28,7 +28,7 @@ function createNewTable(){
         tableName: generateTableName(),
         players:[],
         numberOfPlayer: 0,
-        dealer : {opencards:[],blindedCard:[],total1:0,total2:0},
+        dealer : {openCards:[],blindedCard:[],total1:0,total2:0},
         stack: stack,
         stackIndex:0
     };
@@ -41,6 +41,7 @@ exports.addMeToTable=function(player,table){
 
     table.players.push(player);
     table.numberOfPlayer=table.numberOfPlayer+1;
+    
     return table;
 }
 
