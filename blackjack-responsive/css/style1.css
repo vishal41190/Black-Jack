@@ -91,11 +91,17 @@ span.heading{
 }
 span.topLeftRightSpan{
   position: inherit;
-  height: 15em;
+  height: 6em;
   width:inherit;
   display:inline-block;
-
 }
+
+span.centerCenterSpan {
+ position: inherit;
+  height: 5em;
+  width:inherit;
+  display:inline-block;
+  }
 
 span.playerName{
   position:relative;
@@ -192,4 +198,136 @@ h5 {
 
 .glyphicon-menu-right {
 float: center;
+}
+
+.controls {
+  text-align: center;
+}
+
+.bet.disabled .btn {
+  cursor: default;
+  background-image: none;
+  background-color: #E6E6E6;
+  color: gray;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.chip-container {
+  position: fixed;
+  width: 100%;
+  height: 230px;
+  z-index: 1000;
+}
+.chip-container .chip:active, .chip-container .chip:hover {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  cursor: default;  
+}
+.dealer .stack-o-chips {
+  position: relative;
+  float: right;
+  right: 86px; /*149px;*/
+  top: 63px;
+}
+.player-total .stack-o-chips {
+  position: relative;
+  float: left;
+  top: 274px;
+  left: 40px;
+}
+.player-bet .stack-o-chips {
+  position: relative;
+  float: right;
+  right: 89px;
+  top: 274px;
+}
+.chip span {
+  position: relative;
+  top: -7px;
+}
+.stack-o-chips .chip {
+  margin-top: -57px;
+  position: relative;
+}
+.stack-o-chips .chip1 {
+  left: 0px;
+}
+.stack-o-chips .chip2 {
+  right: 13px;
+  top: 3px;
+}
+.stack-o-chips .chip3 {
+  left: 10px;
+  top: 7px;
+}
+
+/* CSS3 chips inspired by http://www.cssbutton.me/proz0r/darkroom/ */
+.chip {
+    background: #414141;
+    -webkit-box-shadow: 1px 1px #7a7a7a inset;
+    -moz-box-shadow: 1px 1px #7a7a7a inset;
+    box-shadow: 1px 1px #7a7a7a inset;
+    -webkit-border-radius: 75px;
+    -moz-border-radius: 75px;
+    border-radius: 75px;
+    -webkit-transition: 0 5s 0;
+    -moz-transition: 0 5s 0;
+    -o-transition: 0 5s 0;
+    transition: 0 5s 0;
+    padding: 24px 11px;
+    display: block;
+    border-color: #e6e6e6;
+    border-width: 6px;
+    border-style: dashed;
+    text-transform: uppercase;
+    text-align: center;
+    font-family: SF;
+    font-size: 20px;
+    color: #e3e3e3;
+    font-weight: bold;
+    font-style: normal;
+    width: 30px;
+    height: 2px;
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(4px);
+    margin-bottom: 10px;
+}
+.chip:hover {
+  -webkit-box-shadow: 0px 0px 10px #a3a3a3, 1px 1px #7a7a7a inset;
+  -moz-box-shadow: 0px 0px 10px #a3a3a3, 1px 1px #7a7a7a inset;
+  box-shadow: 0px 0px 10px #a3a3a3, 1px 1px #7a7a7a inset;
+  -webkit-transform: rotate(-10deg);
+  -moz-transform: rotate(-10deg);
+  transform: rotate(-10deg);
+  cursor: pointer;
+  text-decoration: none;
+  color: #e3e3e3;
+}
+.chip.active, .chip:active {
+  -webkit-box-shadow:0 0 15px #ffffff; 
+  -moz-box-shadow: 0 0 15px #ffffff; 
+  box-shadow:0 0 15px #ffffff; 
+}
+.bet.disabled .chip, .chip.disabled {
+  opacity: 0.65;
+  cursor: default;
+  text-decoration: none;
+  color: #e3e3e3;
+  -webkit-transform: none;
+  -moz-transform: none;
+  transform: none;
+  -webkit-box-shadow: none; 
+  -moz-box-shadow: none; 
+  box-shadow: none;  
+}
+
+.btn-group{
+  display: inline-block;
 }
