@@ -1,3 +1,17 @@
+.playerMessage {
+  width: 20em !important;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #FEF4E5;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.messageBox {
+    position:relative;
+    width: 20em;
+    border: 1px solid #ddd;
+    border-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(0, 0, 0, 0.5);
+}
 
 span.a {
   position: inherit;
