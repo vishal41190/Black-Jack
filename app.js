@@ -260,35 +260,42 @@ function updateTotal(table){
     table.dealer.total1=dealerTotal1;
     table.dealer.total2=dealerTotal2;
 }
-
-function checkPlayerTotal(table){
-    for(var i=0;i<table.players.length;i++){
-        var total;
-        if(table.players[i].total1>=table.players[i].total2){
-            //total1 > total2
-            if(table.players[i].total1>21){
-                //total1 > 21
-                if(table.players[i].total2!=0){
-                    //total2 ! = null  
-                    total=table.players[i].total2;
+function checkPlayerTotal(player){
+    
+            var total;
+            if(player.total1>=player.total2){
+                //total1 > total2
+                if(player.total1>21){
+                    //total1 > 21
+                    if(player.total2!=0){
+                        //total2 ! = null  
+                        total=player.total2;
+                    }else{
+                        // total2 === null
+                        total = player.total1;
+                    }
                 }else{
-                    // total2 === null
-                    total = table.players[i].total1;
+                    // total 1 > total 2 and <21
+                    total = player.total1;
                 }
-            }else{
-                // total 1 > total 2 and <21
-                total = table.players[i].total1;
-            }
 
-        }else{
-            // total2 > total1
-            if(table.players[i].total2>21){
-                // total 2 > 21 
-                total = table.players[i].total1;
             }else{
-                total = table.players[i].total2;
+                // total2 > total1
+                if(player.total2>21){
+                    // total 2 > 21 
+                    total = player.total1;
+                }else{
+                    total = player.total2;
+                }
             }
-        }
+            return total;
+        
+    
+}
+function checkPlayersTotal(table){
+    for(var i=0;i<table.players.length;i++){
+        var total = checkPlayerTotal(table.players[i]);
+        
         if(total>21){
             table.players[i].status = "lose"
         }
@@ -324,7 +331,7 @@ function checkDealerTotal(table){
     return total;
 }
 function checkFinalTotal(table){
-    checkPlayerTotal(table);
+    checkPlayersTotal(table);
     var dTotal = checkDealerTotal(table);
     console.log(dTotal);
     if(dTotal > 21){
@@ -336,34 +343,13 @@ function checkFinalTotal(table){
         }
     }else{
         for(var i=0;i<table.players.length;i++){
-            var total;
-            if(table.players[i].total1>=table.players[i].total2){
-                //total1 > total2
-                if(table.players[i].total1>21){
-                    //total1 > 21
-                    if(table.players[i].total2!=0){
-                        //total2 ! = null  
-                        total=table.players[i].total2;
-                    }else{
-                        // total2 === null
-                        total = table.players[i].total1;
-                    }
-                }else{
-                    // total 1 > total 2 and <21
-                    total = table.players[i].total1;
-                }
-
-            }else{
-                // total2 > total1
-                if(table.players[i].total2>21){
-                    // total 2 > 21 
-                    total = table.players[i].total1;
-                }else{
-                    total = table.players[i].total2;
-                }
-            }
+            var total=checkPlayerTotal(table.players[i]);
+            
             if(total<dTotal){
-                table.players[i].statue = "lose";
+                console.log("i am here");
+                console.log(table.players.length);
+                table.players[i].status = "lose";
+                
             }
         }
     }
@@ -463,7 +449,7 @@ function stand(player,table){
                 checkFinalTotal(table);
                 sendUpdateToAllPlayer(tableIndex);
                 var temp1=1;
-                for(var j =0 ; table.players.length;j++){
+                for(var j =0 ; j<table.players.length;j++){
                     if(table.players[j].status==="stand"){
                         temp1=0;
                         break;
@@ -474,9 +460,23 @@ function stand(player,table){
                 if(temp1===0){
                     console.log("player still standing");
                     //Some player is still standing
+                    if(checkDealerTotal(table)<17){
                     table.dealer.openCards.push(getCardJSON(table.stack.cards[table.stackIndex]));
                     table.stackIndex=table.stackIndex+1;
-
+                    }
+                    else{
+                        for(var k=0;k< table.players.length;k++){
+                            console.log(table.players);
+                            if(table.players[k].status==="stand"){
+                                if(checkPlayerTotal(table.players[k])>checkDealerTotal(table)){
+                                    table.players[k].status="win";
+                                }
+                                else{
+                                    table.players[k].status="lose";
+                                }
+                            }
+                        }
+                    }
 
                 }
                 else{
