@@ -16,7 +16,7 @@ var game = app.controller("game",function($scope,$socket){
     $scope.cardCss = function(last){
 
         if(last===true){    
-            return "a"
+            return "a";
         }else{
             return "a-half";
         }
@@ -31,6 +31,8 @@ var game = app.controller("game",function($scope,$socket){
         }
     };
     
+    
+    
     angular.element(document).ready(function () {
         $socket.emit("AddMe",{ "playerId" : playerId, "playerName" : "vishal", "playerMoney" : 500, "_id" : "55397f6f4632e8ff4f2a7c87" });
 
@@ -38,6 +40,11 @@ var game = app.controller("game",function($scope,$socket){
             console.log(data);
             $scope.table = data;
         });
+        
+        $scope.bet= function(amount){
+            
+            console.log(amount);
+        }
 
         $scope.deal = function() {
             $socket.emit('deal', playerId);
