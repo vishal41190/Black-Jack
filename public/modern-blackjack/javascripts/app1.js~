@@ -116,13 +116,13 @@ $( "#form2" ).validate({
 $( "#form3" ).validate({
 
   rules: {
-  guestname: {
+  username: {
       required: true,
       minlength:2
     }
   },
   messages:{
-    guestname: {
+    username: {
       required:"please enter guest name",
       minlength:"Your guest name must consists of atleast 2 characters"
   }
