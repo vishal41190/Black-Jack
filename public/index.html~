@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bootstrap 3</title>
+<meta name ="viewport" content="width=device-width,initial-scale=1.0">
+<link href="stylesheet/bootstrap.min.css" rel="stylesheet">
+<link href="stylesheets/popupform.css" rel="stylesheet">
+
+<style>
+
+#btnLogon {
+    width: 150px;
+}
+
+#btnguest {
+    width: 150px;
+}
+
+#btnRegister{
+    width: 150px;
+}
+
+
+
+.top-buffer { margin-top:40px; }
+</style>
+
+</head>
+<body>
+
+<div class="container">
+<center>
+<h1>Black Jack</h1>
+
+</center>
+</div>
+</div>
+
+<hr>
+
+
+<div class="container">
+<div class="row top-buffer">
+</div>
+
+
+<div class="row">
+<div class="col-md-6 col-sm-6 col-xs-6">
+<button type="button" id="btnLogon"  class="btn btn-success pull-right" >signin</button>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-6">
+<button type="button" id="btnguest" class="btn btn-success pull-left"  >Play as Guest</button>
+</div>
+</div>
+
+
+
+<div class="row top-buffer">
+</div>
+
+
+<div class="row">
+<div class="col-md-6 col-sm-6 col-xs-6">
+<button type="button" id="btnRegister" class="btn btn-success pull-right"  >signup</button>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-6">
+</div>
+</div>
+
+
+
+<div class="row top-buffer">
+</div>
+
+<div class="row">
+<div class="col-md-12 col-sm-12 col-xs-12">
+<img src="images/blackjack.jpg" class="img-rounded center-block" alt="Cinque Terre" width="304" height="236">
+</div>
+</div>
+
+
+</div>
+
+
+
+<!--lightbox functionalities so this would be hidden initially 
+<button type="button" id="btnRegister" class="btn btn-success"  >signup</button>
+ <div id="guestform">
+        <div id="popupform">
+          <form action="#" id="form" method="post" name="form">
+            <h3>Welcome to CPSC 631</h3>
+            <h6>This course concentrates on Datbases and A database is an organized collection of data.The data is typically organized to model aspects of reality in a way that supports processes requiring information. For example, modelling the availability of rooms in hotels in a way that supports finding a hotel with vacancies </h6>
+            
+            <button type="button" class="formbutton" id="PostSubmit">submit</button>
+            <button type="button" class="formbutton" id="PostCancel">Cancel</button>
+          </form>
+        </div>
+      </div>
+
+      
+
+
+
+      <div id="loginform">
+        <div id="popupform">
+          <form action="#" id="form" method="post" name="form">
+            <h3>Welcome to CPSC 531</h3>
+            <h6>Database management systems are computer software applications that interact with the user, other applications, and the database itself to capture and analyze data. A general-purpose DBMS is designed to allow the definition, creation, querying, update, and administration of databases. Well-known DBMSs include MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase and IBM DB2.</h6>
+            
+            <button type="button" class="formbutton" id="PostSubmit">submit</button>
+            <button type="button" class="formbutton" id="PostCancel">Cancel</button>
+          </form>
+        </div>
+      </div>
+
+-->
+
+     <div id="sss">
+				<div id="popupform">
+					<form action="#" id="form1" method="post" name="form">
+						<hr>
+						<h2>Registeration Form</h2>
+						<input id="firstname" name="firstname" placeholder="First Name" type="text"><br>
+						<input id="lastname" name="lastname" placeholder="Last Name" type="text"><br>
+            <input id="email" name="email" placeholder="Email" type="email"><br>
+            <input id="password" name="password" placeholder="Password" type="password"><br>
+            <input id="reenterpassword" name="reenterpassword" placeholder="Re-enter Password" type="password"><br>
+						<button type="button" id="PostSubmit" class="btn btn-success formbutton">submit</button>
+            <button type="button" id="PostCancel" class="btn btn-success formbutton" >Cancel</button>
+					</form>
+				</div>
+			</div>
+
+
+      <div id="abc">
+        <div id="popupform">
+          <form action="#" id="form2" method="post" name="form">
+            <hr>
+            <h2>Login</h2>
+            <input id="username" name="username" placeholder="User Name" type="text"><br>
+            <input id="password" name="password" placeholder="Password" type="password"><br>
+            <button type="button" id="login1" class="btn btn-success">Login</button>
+          </form>
+        </div>
+      </div>
+
+
+
+      <div id="xyz">
+        <div id="popupform">
+          <form action="#" id="form3" method="post" name="form">
+            <hr>
+            <h2>Guest Form</h2>
+            <input id="guestname" name="guestname" placeholder="Guest Name" type="text"><br>
+            <button type="button" id="guest1" class="btn btn-success">Enter as Guest</button>
+          </form>
+        </div>
+      </div>
+
+
+
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
+<script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="javascripts/app1.js"></script>
+<script>
+
+
+
+
+</script>
+</body>
+</html>

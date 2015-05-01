@@ -1,0 +1,197 @@
+@import "http://fonts.googleapis.com/css?family=Raleway";
+/*----------------------------------------------
+CSS settings for HTML div Exact Center
+------------------------------------------------*/
+#abc, #xyz, #sss{
+	width:100%;
+	height:100%;
+	opacity:1;
+	top:0;
+	left:0;
+	display:none;
+	position:fixed;
+	background-color:#313131;
+	overflow:auto
+}
+
+div#popupform {
+	position:absolute;
+	left:50%;
+	top:3%;
+	margin-left:-202px;
+	font-family:'Raleway',sans-serif
+}
+
+
+#form1 {
+	max-width:500px;
+	min-width:400px;
+	min-height:560px;
+	padding:10px 50px;
+	border:2px solid gray;
+	border-radius:10px;
+	font-family:raleway;
+	background-color:#fff
+}
+
+/*this is for sign in only*/
+#form2 {
+	max-width:500px;
+	min-width:400px;
+	min-height:360px;
+	padding:10px 50px;
+	border:2px solid gray;
+	border-radius:10px;
+	font-family:raleway;
+	background-color:#fff
+}
+
+/*this is for sign in only*/
+
+/*this is for guest*/
+#form3 {
+	max-width:500px;
+	min-width:400px;
+	min-height:260px;
+	padding:10px 50px;
+	border:2px solid gray;
+	border-radius:10px;
+	font-family:raleway;
+	background-color:#fff
+}
+
+/*this is for guest*/
+
+
+
+
+div#popupform h2 {
+	background-color:#FEFFED;
+	padding:20px 35px;
+	margin:-10px -50px;
+	text-align:center;
+	border-radius:10px 10px 0 0
+}
+
+div#popupform hr {
+	margin:10px -50px;
+	border:0;
+	border-top:1px solid #ccc
+}
+
+div#popupform input[type=text] {
+	width:82%;
+	padding:10px;
+	margin-top:30px;
+	border:1px solid #ccc;
+	padding-left:40px;
+	font-size:16px;
+	font-family:raleway
+}
+
+div#popupform input[type=password] {
+	width:82%;
+	padding:10px;
+	margin-top:30px;
+	border:1px solid #ccc;
+	padding-left:40px;
+	font-size:16px;
+	font-family:raleway
+}
+div#popupform input[type=email] {
+	width:82%;
+	padding:10px;
+	margin-top:30px;
+	border:1px solid #ccc;
+	padding-left:40px;
+	font-size:16px;
+	font-family:raleway
+}
+
+div#popupform textarea {
+	width:82%;
+	height:95px;
+	padding:10px;
+	resize:none;
+	margin-top:30px;
+	border:1px solid #ccc;
+	padding-left:40px;
+	font-size:16px;
+	font-family:raleway;
+	margin-bottom:30px
+}
+
+div#popupform .formbutton{
+	margin-top:20px;
+	margin-left:20px;
+	float:left;
+	display:block;
+	font-size:20px;
+	cursor:pointer;
+	border-radius:5px
+}
+
+#login1{
+	margin-top:20px;
+	margin-left:80px;
+	float:left;
+	display:block;
+	font-size:20px;
+	cursor:pointer;
+	border-radius:5px
+}
+
+#guest1{
+	margin-top:20px;
+	margin-left:40px;
+	float:left;
+	display:block;
+	font-size:20px;
+	cursor:pointer;
+	border-radius:5px
+}
+
+/*
+
+div#popupform .formbutton{
+	text-decoration:none;
+	width:95%;
+	padding:10px;
+	text-align:center;
+	display:block;
+    background-color:#eeeeee;
+	color:#000000;
+	border:1px solid #000000; 
+	font-size:20px;
+	cursor:pointer;
+	border-radius:5px
+}
+*/
+
+/*
+div#popupform span {
+	color:red;
+	font-weight:700
+}
+
+div#popupform fieldset {
+	width:89%;
+	padding:10px;
+	border:1px solid #ccc;
+	font-size:16px;
+	font-family:raleway;
+}
+
+div#popupform #radioleft {
+	display: inline-block;
+	float: left;
+	width: 50%;
+}
+
+div#popupform #radioright {
+	display: inline-block;
+	float: right;
+	width: 50%;
+}
+
+*/
