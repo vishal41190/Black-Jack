@@ -267,8 +267,9 @@ function checkPlayerTotal(player){
         //total1 > total2
         if(player.total1>21){
             //total1 > 21
-            if(player.total2!=0){
+            if(player.total2!=null){
                 //total2 ! = null  
+                
                 total=player.total2;
             }else{
                 // total2 === null
@@ -308,7 +309,7 @@ function checkDealerTotal(table){
         //total1 > total2
         if(table.dealer.total1>21){
             //total1 > 21
-            if(table.dealer.total2!=0){
+            if(table.dealer.total2!=null){
                 //total2 ! = null  
                 total=table.dealer.total2;
             }else{
@@ -334,10 +335,10 @@ function checkDealerTotal(table){
 function checkFinalTotal(table){
     checkPlayersTotal(table);
     var dTotal = checkDealerTotal(table);
-    console.log(dTotal);
+    
     if(dTotal > 21){
         for(var i =0; i <table.players.length;i++){
-            console.log( table.players[i].status);
+            
             if(table.players[i].status==="stand") {
                 table.players[i].status="win";
                 table.players[i].playerMoney = table.players[i].playerMoney + table.players[i].playerBet +  table.players[i].playerBet;
@@ -349,8 +350,7 @@ function checkFinalTotal(table){
             var total=checkPlayerTotal(table.players[i]);
 
             if(total<dTotal){
-                console.log("i am here");
-                console.log(table.players.length);
+                
                 table.players[i].status = "lose";
                  table.players[i].playerBet = 0;
 
@@ -479,7 +479,7 @@ function stand(player,table){
 
 
                 if(temp1===0){
-                    console.log("player still standing");
+                    
                     //Some player is still standing
                     if(checkDealerTotal(table)<17){
                         table.dealer.openCards.push(getCardJSON(table.stack.cards[table.stackIndex]));
@@ -487,7 +487,7 @@ function stand(player,table){
                     }
                     else{
                         for(var k=0;k< table.players.length;k++){
-                            console.log(table.players);
+                           
                             if(table.players[k].status==="stand"){
                                 if(checkPlayerTotal(table.players[k])>checkDealerTotal(table)){
                                     table.players[k].status="win";
@@ -514,8 +514,7 @@ function stand(player,table){
         temp =1;
         for(var l=0; l<table.players.length;l++){
             if(table.players[l].status!="win" && table.players[l].status!="lose"){
-                console.log("not start new game");
-                console.log(table.players[l].status);
+                
                 temp=0;
                 break;
             }

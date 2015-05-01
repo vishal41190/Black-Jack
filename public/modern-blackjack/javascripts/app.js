@@ -21,6 +21,13 @@ var game = app.controller("game",function($scope,$socket){
             return "a-half";
         }
     };
+    $scope.showTotal2=function(total1,total2){
+        if(total1 === total2){
+            return false;
+        }else{
+            return true;
+        }
+    };
 
     $scope.playerstatus = function(status){
         if(status==="win" || status==="lose"){
@@ -34,7 +41,7 @@ var game = app.controller("game",function($scope,$socket){
     
     
     angular.element(document).ready(function () {
-        $socket.emit("AddMe",{ "playerId" : playerId, "playerName" : playerId, "playerMoney" : 500, "_id" : "55397f6f4632e8ff4f2a7c87" });
+        $socket.emit("AddMe",{ "playerId" : playerId, "playerName" : playerId, "playerMoney" : 500});
 
         $socket.on('update', function (data) {
             console.log(data);

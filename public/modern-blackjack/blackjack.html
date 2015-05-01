@@ -46,7 +46,7 @@
 
                 <div class="cards">
                     <!--center dealer and player-->
-                    <div class="label-top">Dealer(Total : {{table.dealer.total1}})</div>
+                    <div class="label-top">Dealer(Total : {{table.dealer.total1}}<div ng-if="showTotal2(table.dealer.total1,table.dealer.total2)">/{{table.dealer.total2}}</div>)</div>
                     <div class="dealer">
                         <span  ng-repeat='cards in table.dealer.openCards' class="{{cardCss($last)}} {{cards.card}}"></span>
 
@@ -62,7 +62,7 @@
                         <span  ng-repeat='cards in table.player.cards' class="{{cardCss($last)}} {{cards.card}}"></span>
 
                     </div>
-                    <div class="label-bottom" >{{table.player.playerName}}(Total : {{table.player.total1}}) <div ng-if="playerstatus(table.player.status)">{{table.player.status}}</div></div>
+                    <div class="label-bottom" >{{table.player.playerName}}(Total : {{table.player.total1}}<div ng-if="showTotal2(table.player.total1,table.player.total2)">/{{table.player.total2}}</div>) <div ng-if="playerstatus(table.player.status)">{{table.player.status}}</div></div>
                 </div>
 
                 <div class="cards right">
@@ -76,7 +76,8 @@
         </div>
 
         <div class="alert-container">
-            <div class="alert alert-block none"></div>        
+            <div class="alert alert-block alert-none" style="display: block;">{{alertMessage}}You have <strong>500</strong> chips</div>
+                   
         </div> 
 
         <div class="player controls">
