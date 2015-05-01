@@ -12,7 +12,7 @@ var game = app.controller("game",function($scope,$socket){
       $socket.disconnect();  
         return "You are leaving";
     };
-
+    $scope.alertMessage = "errmsg";
     $scope.cardCss = function(last){
 
         if(last===true){    
@@ -46,6 +46,12 @@ var game = app.controller("game",function($scope,$socket){
         $socket.on('update', function (data) {
             console.log(data);
             $scope.table = data;
+            if($scope.table.player.status==="win"){
+                $scope.alertMessage = "Congrates You <strong>WON</strong>";
+            }
+            if($scope.table.player.status==="lose"){
+                 $scope.alertMessage = "Sorry You <strong>LOST</strong>";
+            }
         });
         
         $scope.bet= function(amount){
