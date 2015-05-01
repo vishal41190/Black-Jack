@@ -62,7 +62,7 @@ rules: {
       required:true,
       minlength:5
     },
-    confirmpassword:{
+    reenterpassword:{
       required:true,
       minlength:5,
       equalTo:"#password"
@@ -79,7 +79,7 @@ messages:{
     required:"please provide a password",
     minlength:"Your password must be atleast 5 characters long"
   },
-  confirmpassword:{
+  reenterpassword:{
     required:"please provide a password",
     minlength:"Your password must be atleast 5 characters long",
     equalTo:"Please enter the same password as above"
