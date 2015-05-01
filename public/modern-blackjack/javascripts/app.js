@@ -2,7 +2,7 @@
 var app = angular.module("blackjack",[ 'socket.io' ]);
 var playerId = Date.now();
 app.config(function ($socketProvider) {
-    $socketProvider.setConnectionUrl('http://localhost:3000');
+    $socketProvider.setConnectionUrl('http://10.42.0.1:3000');
 });
 var game = app.controller("game",function($scope,$socket){
 
@@ -34,7 +34,7 @@ var game = app.controller("game",function($scope,$socket){
     
     
     angular.element(document).ready(function () {
-        $socket.emit("AddMe",{ "playerId" : playerId, "playerName" : "vishal", "playerMoney" : 500, "_id" : "55397f6f4632e8ff4f2a7c87" });
+        $socket.emit("AddMe",{ "playerId" : playerId, "playerName" : playerId, "playerMoney" : 500, "_id" : "55397f6f4632e8ff4f2a7c87" });
 
         $socket.on('update', function (data) {
             console.log(data);
@@ -42,12 +42,17 @@ var game = app.controller("game",function($scope,$socket){
         });
         
         $scope.bet= function(amount){
-            
+            if($scope.table.player.status==="lose" || $scope.table.player.status==="win"){
+               // $socket.emit("startNew",{playerId:playerId,bet:amount});
+                $scope.table.player.status="startNew";
+            }
+            $scope.table.player.playerMoney = $scope.table.player.playerMoney -amount;
+            $scope.table.player.playerBet = $scope.table.player.playerBet + amount;
             console.log(amount);
         }
 
         $scope.deal = function() {
-            $socket.emit('deal', playerId);
+            $socket.emit('deal', {playerId:playerId,bet:$scope.table.player.playerBet});
 
         };
         $scope.hit = function hit(){

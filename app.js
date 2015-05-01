@@ -261,43 +261,44 @@ function updateTotal(table){
     table.dealer.total2=dealerTotal2;
 }
 function checkPlayerTotal(player){
-    
-            var total;
-            if(player.total1>=player.total2){
-                //total1 > total2
-                if(player.total1>21){
-                    //total1 > 21
-                    if(player.total2!=0){
-                        //total2 ! = null  
-                        total=player.total2;
-                    }else{
-                        // total2 === null
-                        total = player.total1;
-                    }
-                }else{
-                    // total 1 > total 2 and <21
-                    total = player.total1;
-                }
 
+    var total;
+    if(player.total1>=player.total2){
+        //total1 > total2
+        if(player.total1>21){
+            //total1 > 21
+            if(player.total2!=0){
+                //total2 ! = null  
+                total=player.total2;
             }else{
-                // total2 > total1
-                if(player.total2>21){
-                    // total 2 > 21 
-                    total = player.total1;
-                }else{
-                    total = player.total2;
-                }
+                // total2 === null
+                total = player.total1;
             }
-            return total;
-        
-    
+        }else{
+            // total 1 > total 2 and <21
+            total = player.total1;
+        }
+
+    }else{
+        // total2 > total1
+        if(player.total2>21){
+            // total 2 > 21 
+            total = player.total1;
+        }else{
+            total = player.total2;
+        }
+    }
+    return total;
+
+
 }
 function checkPlayersTotal(table){
     for(var i=0;i<table.players.length;i++){
         var total = checkPlayerTotal(table.players[i]);
-        
+
         if(total>21){
             table.players[i].status = "lose"
+            table.players[i].playerBet = 0;
         }
     }
 }
@@ -336,25 +337,44 @@ function checkFinalTotal(table){
     console.log(dTotal);
     if(dTotal > 21){
         for(var i =0; i <table.players.length;i++){
-           console.log( table.players[i].status);
+            console.log( table.players[i].status);
             if(table.players[i].status==="stand") {
                 table.players[i].status="win";
+                table.players[i].playerMoney = table.players[i].playerMoney + table.players[i].playerBet +  table.players[i].playerBet;
+                table.players[i].playerBet = 0;
             }
         }
     }else{
         for(var i=0;i<table.players.length;i++){
             var total=checkPlayerTotal(table.players[i]);
-            
+
             if(total<dTotal){
                 console.log("i am here");
                 console.log(table.players.length);
                 table.players[i].status = "lose";
-                
+                 table.players[i].playerBet = 0;
+
             }
         }
     }
 }
+function startNewGame(table){
+   
+        table.dealer.openCards=[];
+        table.dealer.blindedCard=[];
+        for(var j=0; j<table.players.length;j++){
+            table.players[j].cards = [];
+            table.players[j].status = "waiting";
+
+        }
+        updateTotal(table);
+        var tableIndex = findTableIndex(table.tableName);
+        sendUpdateToAllPlayer(tableIndex);
+    
+
+}
 function deal(player,table){
+    if(player.status!="startNew"){
     player.status="deal";
     player.cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
     table.stackIndex=table.stackIndex+1;
@@ -404,6 +424,7 @@ function deal(player,table){
     }
     updateTotal(table);
 }
+}
 
 function hit(player,table){
 
@@ -424,10 +445,10 @@ function stand(player,table){
     var tableIndex = findPlayerTable(player.playerId);
     temp=1;
     for(var i =0 ;i < table.players.length;i++){
-        if(table.players[i].status==="hit"){
+        if(table.players[i].status==="hit" || table.players[i].status==="deal"){
             temp=0;
             break;
-        }
+        }   
     }
 
     if(temp===0){
@@ -461,8 +482,8 @@ function stand(player,table){
                     console.log("player still standing");
                     //Some player is still standing
                     if(checkDealerTotal(table)<17){
-                    table.dealer.openCards.push(getCardJSON(table.stack.cards[table.stackIndex]));
-                    table.stackIndex=table.stackIndex+1;
+                        table.dealer.openCards.push(getCardJSON(table.stack.cards[table.stackIndex]));
+                        table.stackIndex=table.stackIndex+1;
                     }
                     else{
                         for(var k=0;k< table.players.length;k++){
@@ -470,9 +491,14 @@ function stand(player,table){
                             if(table.players[k].status==="stand"){
                                 if(checkPlayerTotal(table.players[k])>checkDealerTotal(table)){
                                     table.players[k].status="win";
+                                    table.players[k].playerMoney = table.players[k].playerMoney + table.players[k].playerBet + table.players[k].playerBet;
+                                    table.players[k].playerBet = 0;
                                 }
                                 else{
                                     table.players[k].status="lose";
+                                    table.players[k].playerBet = 0;
+
+
                                 }
                             }
                         }
@@ -485,7 +511,21 @@ function stand(player,table){
             }
 
         }
-
+        temp =1;
+        for(var l=0; l<table.players.length;l++){
+            if(table.players[l].status!="win" && table.players[l].status!="lose"){
+                console.log("not start new game");
+                console.log(table.players[l].status);
+                temp=0;
+                break;
+            }
+        }
+        if(temp===0){
+            
+        }else{
+            startNewGame(table);
+           
+        }
 
 
 
@@ -513,11 +553,14 @@ io.on("connection",function(sct){
     });
     sct.on("deal",function(data){
 
-        playerId=data;
+        playerId=data.playerId;
         var tableIndex = findPlayerTable(playerId);
 
         var player = findPlayer(playerId);
-
+      //  player.status="startNew";
+        player.playerBet = data.bet;
+        player.playerMoney= player.playerMoney-player.playerBet;
+       // startNewGame(tables[tableIndex]);
         deal(player,tables[tableIndex]);
         //   var liveTable = getLiveTable(playerId,tableIndex);
         sendUpdateToAllPlayer(tableIndex);
@@ -539,7 +582,14 @@ io.on("connection",function(sct){
         var player = findPlayer(playerId);
         stand(player,tables[tableIndex]);
     });
-
+    sct.on("startNew",function(data){
+        playerId = data.playerId;
+        var tableIndex=findPlayerTable(playerId);
+        var player = findPlayer(playerId);
+        player.status="startNew";
+        player.playerBet= data.bet;
+        startNewGame(tables[tableIndex]);
+    });
     sct.on("AddMe",function(data){
         var player;
         playerId=data.playerId;
@@ -558,6 +608,7 @@ io.on("connection",function(sct){
 
             player.total1 =0;
             player.total2 = 0;
+            player.playerBet = 0;
             sockets[player.playerId]=sct;
             playerSocket[sct]=player.playerId;
             game.addMeToTable(player,table);
