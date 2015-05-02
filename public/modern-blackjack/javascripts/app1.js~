@@ -24,7 +24,7 @@ var main = function() {
 		$("#abc").show();
 	});
 
-	$("#abc #popupform #login1").click(function() {
+	$("#abc #popupform #login2").click(function() {
 		$("#abc").hide();
 	});
 
@@ -36,8 +36,8 @@ var main = function() {
 		$("#xyz").show();
 	});
 
-	$("#xyz #popupform #guest1").click(function() {
-		$("#xyz").hide();
+	$("#xyz #popupform #guest2").click(function() {
+                	$("#xyz").hide();
 	});
 
 
@@ -79,7 +79,7 @@ messages:{
     required:"please provide a password",
     minlength:"Your password must be atleast 5 characters long"
   },
-  reenterpassword:{
+ reenterpassword:{
     required:"please provide a password",
     minlength:"Your password must be atleast 5 characters long",
     equalTo:"Please enter the same password as above"
@@ -126,7 +126,10 @@ $( "#form3" ).validate({
       required:"please enter guest name",
       minlength:"Your guest name must consists of atleast 2 characters"
   }
-}
+},
+                submitHandler: function(form) {
+                    form.submit();
+                }
 
 
   });

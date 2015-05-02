@@ -24,7 +24,7 @@ var main = function() {
 		$("#abc").show();
 	});
 
-	$("#abc #popupform #login1").click(function() {
+	$("#abc #popupform #login2").click(function() {
 		$("#abc").hide();
 	});
 

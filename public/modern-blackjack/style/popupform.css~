@@ -52,7 +52,7 @@ div#popupform {
 #form3 {
 	max-width:500px;
 	min-width:400px;
-	min-height:260px;
+	min-height:300px;
 	padding:10px 50px;
 	border:2px solid gray;
 	border-radius:10px;
@@ -129,6 +129,17 @@ div#popupform .formbutton{
 	font-size:20px;
 	cursor:pointer;
 	border-radius:5px
+} 
+
+
+#PostSubmit{
+	margin-top:20px;
+	margin-left:60px;
+	float:left;
+	display:block;
+	font-size:20px;
+	cursor:pointer;
+	border-radius:5px
 }
 
 #login1{
@@ -143,7 +154,7 @@ div#popupform .formbutton{
 
 #guest1{
 	margin-top:20px;
-	margin-left:40px;
+	margin-left:1px;
 	float:left;
 	display:block;
 	font-size:20px;

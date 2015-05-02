@@ -129,6 +129,17 @@ div#popupform .formbutton{
 	font-size:20px;
 	cursor:pointer;
 	border-radius:5px
+} 
+
+
+#PostSubmit{
+	margin-top:20px;
+	margin-left:60px;
+	float:left;
+	display:block;
+	font-size:20px;
+	cursor:pointer;
+	border-radius:5px
 }
 
 #login1{
@@ -151,47 +162,3 @@ div#popupform .formbutton{
 	border-radius:5px
 }
 
-/*
-
-div#popupform .formbutton{
-	text-decoration:none;
-	width:95%;
-	padding:10px;
-	text-align:center;
-	display:block;
-    background-color:#eeeeee;
-	color:#000000;
-	border:1px solid #000000; 
-	font-size:20px;
-	cursor:pointer;
-	border-radius:5px
-}
-*/
-
-/*
-div#popupform span {
-	color:red;
-	font-weight:700
-}
-
-div#popupform fieldset {
-	width:89%;
-	padding:10px;
-	border:1px solid #ccc;
-	font-size:16px;
-	font-family:raleway;
-}
-
-div#popupform #radioleft {
-	display: inline-block;
-	float: left;
-	width: 50%;
-}
-
-div#popupform #radioright {
-	display: inline-block;
-	float: right;
-	width: 50%;
-}
-
-*/
