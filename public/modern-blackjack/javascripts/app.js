@@ -2,7 +2,7 @@
 var app = angular.module("blackjack",[ 'socket.io' ]);
 var playerId = Date.now();
 app.config(function ($socketProvider) {
-    $socketProvider.setConnectionUrl('http://10.42.0.1:3000');
+    $socketProvider.setConnectionUrl('http://localhost:3000');
 });
 var game = app.controller("game",function($scope,$socket,$interval){
 
