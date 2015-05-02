@@ -8,11 +8,16 @@ var main = function() {
 		$("#sss").show();
      });
 
-	$("#sss #popupform #PostSubmit").click(function() {
-		$("#sss").hide();
-	});
+
 
 	$("#sss #popupform #PostCancel").click(function() {
+                 $("label.error").hide();
+                 $(".error").removeClass("error");
+                  
+                $('#firstname').val("");
+                $('#lastname').val("");
+                $('input[type="password"]').val('');
+                $('input[type="email"]').val('');
 		$("#sss").hide();
 	});
 	/* End New Registeration Form */
@@ -24,7 +29,14 @@ var main = function() {
 		$("#abc").show();
 	});
 
+/*code referred from http://stackoverflow.com/questions/2086287/how-to-clear-jquery-validation-error-messages */
+/*http://stackoverflow.com/questions/10951809/clear-text-field-value-in-jquery */
 	$("#abc #popupform #login2").click(function() {
+                 $("label.error").hide();
+                 $(".error").removeClass("error");
+                  
+                $('#username').val("");
+                $('input[type="password"]').val('');
 		$("#abc").hide();
 	});
 
@@ -37,6 +49,10 @@ var main = function() {
 	});
 
 	$("#xyz #popupform #guest2").click(function() {
+                   $("label.error").hide();
+                   $(".error").removeClass("error");
+                   $('#guestname').val("");
+                 
                 	$("#xyz").hide();
 	});
 
