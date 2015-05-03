@@ -106,7 +106,7 @@ function getLiveTable(playerId,tableIndex){
     var temp = {};
 
     var tbl = tables[tableIndex];
-    //  console.log(tbl.players);
+
     temp.tableName=tbl.tableName;
     temp.player = getPlayer(tbl.players,playerId);
     temp.otherPlayer = getOtherPlayer(tbl.players,playerId);
@@ -147,26 +147,10 @@ function getKeysForValue(obj, value) {
 
 
 
-var table = {
 
-    tableName: "",
-    players:[],
-    numberOfPlayer: 0,
-    dealer : null,
-    stack: [],
-    stackIndex:0
-
-
-};
-var liveTable={
-    tableName:"afsf",
-    otherPlayer:[],
-    player:{ cards:[], status:"", total:3},
-    dealer:{openCards:[],blindedCard:"",total:10}
-};
 
 function sendUpdateToAllPlayer(tableIndex){
-    // console.log(table);
+   
     if(tables[tableIndex]!=undefined){
         var players = tables[tableIndex].players;
         var liveTbl;
@@ -208,7 +192,7 @@ function removeEmptyTable(){
 
         if(tables[i].numberOfPlayer===0){
             tables.splice(i,1);
-            console.log("Empty table removed");
+
         }
     }
 }
@@ -425,8 +409,8 @@ function deal(player,table){
 
             for(var j=0;j<table.players.length;j++){
                 if(table.players[j].status!="standBy"){
-                table.players[j].cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
-                table.stackIndex=table.stackIndex+1;}
+                    table.players[j].cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
+                    table.stackIndex=table.stackIndex+1;}
             }
             //give dealer a second card
 
@@ -587,43 +571,71 @@ function getPlayerMoney(Id){
     MongoClient.connect(databaseUrl, function(err, db) {
         if (err) {
             console.log("Problem connecting database");
-            res.status(404).send("Problem connecting database");
+
         } else {
 
             var collection = db.collection("user",{capped:true,size:100000});
             var user;
             var playerId = parseInt(Id);
-            console.log(playerId);
+
             collection.find({playerId: playerId}).toArray(function(err,items){
                 if(err){
                     console.log(err);
                     deferred.reject(new Error(err));
-                   
+
                 }else{
-                if(items.length>0){
-                deferred.resolve(items[0].playerMoney);
-                }
+                    if(items.length>0){
+
+                        deferred.resolve(items[0].playerMoney);
+                    }
                     else{
-                        deferred.reslve(500);
+
+                        deferred.resolve(500);
                     }
                 }
             });
-                
+
 
         }
     });
-return deferred.promise;
+    return deferred.promise;
+}
+function updatePlayerMoney(Id,playerMoney){
+    var deferred = Q.defer();
+    MongoClient.connect(databaseUrl, function(err, db) {
+        if (err) {
+            
+        } else {
+
+            var collection = db.collection("user",{capped:true,size:100000});
+
+            var playerId = parseInt(Id);
+
+            collection.update({playerId: playerId},{$set:{playerMoney:playerMoney}},function(err,items){
+                if(err){
+                    console.log(err);
+                    deferred.resolve(0);
+                }
+                else{
+                   
+                    deferred.resolve(1);
+                }
+            });
+           
+        }
+    });
+    return deferred.promise;
 }
 
-
 io.on("connection",function(sct){
-    console.log("connected");
+   
     var playerId;
-    sct.on("disconnect",function(){
+    sct.on("disconnect",function(data){
 
         console.log("disconnecting"+playerId);
         var tableIndex = findPlayerTable(playerId);
         removePlayerFromTable(playerId);
+
         delete sockets[playerId];
         delete playerSocket[sct];
         freeOtherPlayer(tableIndex);
@@ -656,6 +668,9 @@ io.on("connection",function(sct){
         hit(player,tables[tableIndex]);
         // var liveTable = getLiveTable(playerId,tableIndex);
         // sendUpdateToAllPlayer(tableIndex);
+        (updatePlayerMoney(playerId,player.playerMoney)).then(function(value){
+           
+        });
 
     });
     sct.on("stand",function(data){
@@ -663,6 +678,9 @@ io.on("connection",function(sct){
         var tableIndex=findPlayerTable(playerId);
         var player = findPlayer(playerId);
         stand(player,tables[tableIndex]);
+        (updatePlayerMoney(playerId,player.playerMoney)).then(function(value){
+           
+        });
     });
     sct.on("startNew",function(data){
         playerId = data.playerId;
@@ -676,68 +694,64 @@ io.on("connection",function(sct){
         var player;
         playerId=data.playerId;
         var table =findPlayerTable(data.playerId);
-        console.log(table);
+       
         if(table===null){
-            console.log("table is null");
+           
             table= game.findTableForMe(tables);
             player = JSON.parse(JSON.stringify(data));
+           
             (getPlayerMoney(player.playerId)).then(function(money){
                 player.playerMoney=money;
-                 console.log("player money");
-            console.log(player.playerMoney);
-            console.log();
-            player.cards =[];
-            if(table.dealer.openCards.length>0){
-                var temp=0;
-                for(var i =0;i<table.players.length;i++){
-                    if(table.players[i].status==="deal" || table.players[i].status==="stand" || table.players[i].status==="waiting" || table.players[i].status==="hit" ){
-                        temp=1;
-                        break;
+               
+                player.cards =[];
+                if(table.dealer.openCards.length>0){
+                    var temp=0;
+                    for(var i =0;i<table.players.length;i++){
+                        if(table.players[i].status==="deal" || table.players[i].status==="stand" || table.players[i].status==="waiting" || table.players[i].status==="hit" ){
+                            temp=1;
+                            break;
+                        }
                     }
-                }
-                if(temp=0 || player.status===undefined){
-                    console.log("starting new game for new player");
-                    player.status="waiting";
-                    startNewGame(table);
+                    if(temp=0 || player.status===undefined){
+                       
+                        player.status="waiting";
+                        startNewGame(table);
+                    }else{
+                      
+                       
+                        player.status="standBy";
+                    }
                 }else{
-                    console.log(player.status);
-                    console.log("adding player to standBY");
-                    player.status="standBy";
+                    player.status="waiting";
                 }
-            }else{
-                player.status="waiting";
-            }
 
-            player.total1 =0;
-            player.total2 = 0;
-            player.playerBet = 0;
-            sockets[player.playerId]=sct;
-            playerSocket[sct]=player.playerId;
-            game.addMeToTable(player,table);
-             var tableIndex = findPlayerTable(player.playerId);
+                player.total1 =0;
+                player.total2 = 0;
+                player.playerBet = 0;
+                sockets[player.playerId]=sct;
+                playerSocket[sct]=player.playerId;
+                game.addMeToTable(player,table);
+                var tableIndex = findPlayerTable(player.playerId);
 
-        sendUpdateToAllPlayer(tableIndex);
+                sendUpdateToAllPlayer(tableIndex);
             });
-           
-           
+
+
 
         }
         else{
 
-            //console.log(table);
+           
             player = findPlayer(data.playerId);
-             var tableIndex = findPlayerTable(player.playerId);
+            var tableIndex = findPlayerTable(player.playerId);
 
-        sendUpdateToAllPlayer(tableIndex);
+            sendUpdateToAllPlayer(tableIndex);
 
         }
-        //  var liveTable=getLiveTable(player.playerId,findTableIndex(table.tableName));
-        // console.log(tables[0].players[0]);
+        
+
+
        
-
-        //io.socket(sct.id).emit("added",liveTable);
-        //sct.emit("added",liveTable);   
-
 
     });
     sct.on("standBy",function(data){
@@ -748,10 +762,10 @@ io.on("connection",function(sct){
 
         player.status="standBy";
         for(var i=0; i<table.players.length;i++){
-            console.log(table.players);
+            
             if(table.players[i].playerId!=player.playerId){
                 if(table.players[i].status==="stand"){
-                    console.log("i am here");
+                  
                     stand(table.players[i],table);
                     // sendUpdateToAllPlayer(tableIndex);
                 }

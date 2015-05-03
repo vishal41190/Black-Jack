@@ -9,8 +9,7 @@ router.post('/', function(req, res, next) {
     var playerName = req.body.playerName;
     
     
-    req.session.playerId=1234;
-    req.session.playerName="vishal";
+    
     MongoClient.connect(databaseUrl, function(err, db) {
         if (err) {
             console.log("Problem connecting database");
@@ -22,12 +21,11 @@ router.post('/', function(req, res, next) {
             var user = {
                 playerId: Date.now(),
                 playerName: playerName,
-                playerMoney: 435
-
+                playerMoney: 500
             };
             
             req.session.playerId=user.playerId;
-            req.session.playername=user.playerName;
+            req.session.playerName=user.playerName;
            // console.log(user);
             collection.insert(user,function(err,result){
                 if(err){  

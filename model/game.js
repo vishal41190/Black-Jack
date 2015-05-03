@@ -58,7 +58,14 @@ exports.findTableForMe=function(tables){
 
     if(temp.length===0){
         temp = createNewTable();
-        var tableName = tables.length+1;
+        var tableName;
+        if(tables.length<1){
+            tableName =0;
+        }else
+            {
+                tableName =parseInt(tables[tables.length-1].tableName)+1;
+            }
+        // tableName = parseInt(tables[tables.length-1].tableName)
         temp.tableName=tableName;
         tables.push(temp);
         return temp;
