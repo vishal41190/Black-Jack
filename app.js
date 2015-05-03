@@ -161,12 +161,14 @@ var liveTable={
 
 function sendUpdateToAllPlayer(tableIndex){
     // console.log(table);
-    var players = tables[tableIndex].players;
-    var liveTbl;
-    for(var i =0 ;i < players.length ; i++){
-        liveTbl = getLiveTable(players[i].playerId,tableIndex);
-        sockets[players[i].playerId].emit("update",liveTbl);
+    if(tables[tableIndex]!=undefined){
+        var players = tables[tableIndex].players;
+        var liveTbl;
+        for(var i =0 ;i < players.length ; i++){
+            liveTbl = getLiveTable(players[i].playerId,tableIndex);
+            sockets[players[i].playerId].emit("update",liveTbl);
 
+        }
     }
 }
 function findTableIndex(tableName){
@@ -269,7 +271,7 @@ function checkPlayerTotal(player){
             //total1 > 21
             if(player.total2!=null){
                 //total2 ! = null  
-                
+
                 total=player.total2;
             }else{
                 // total2 === null
@@ -298,8 +300,9 @@ function checkPlayersTotal(table){
         var total = checkPlayerTotal(table.players[i]);
 
         if(total>21){
-            table.players[i].status = "lose"
+            table.players[i].status = "lose";
             table.players[i].playerBet = 0;
+            freeOtherPlayer(findTableIndex(table.tableName));
         }
     }
 }
@@ -335,10 +338,10 @@ function checkDealerTotal(table){
 function checkFinalTotal(table){
     checkPlayersTotal(table);
     var dTotal = checkDealerTotal(table);
-    
+
     if(dTotal > 21){
         for(var i =0; i <table.players.length;i++){
-            
+
             if(table.players[i].status==="stand") {
                 table.players[i].status="win";
                 table.players[i].playerMoney = table.players[i].playerMoney + table.players[i].playerBet +  table.players[i].playerBet;
@@ -350,44 +353,55 @@ function checkFinalTotal(table){
             var total=checkPlayerTotal(table.players[i]);
 
             if(total<dTotal){
-                
+
                 table.players[i].status = "lose";
-                 table.players[i].playerBet = 0;
+                table.players[i].playerBet = 0;
 
             }
         }
     }
 }
 function startNewGame(table){
-   
-        table.dealer.openCards=[];
-        table.dealer.blindedCard=[];
-        for(var j=0; j<table.players.length;j++){
-            table.players[j].cards = [];
-            table.players[j].status = "waiting";
 
-        }
-        updateTotal(table);
-        var tableIndex = findTableIndex(table.tableName);
-        sendUpdateToAllPlayer(tableIndex);
-    
+    table.dealer.openCards=[];
+    table.dealer.blindedCard=[];
+    for(var j=0; j<table.players.length;j++){
+        table.players[j].cards = [];
+        table.players[j].status = "waiting";
+
+    }
+    updateTotal(table);
+    var tableIndex = findTableIndex(table.tableName);
+    sendUpdateToAllPlayer(tableIndex);
+
 
 }
 function deal(player,table){
-    if(player.status!="startNew"){
-    player.status="deal";
-    player.cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
-    table.stackIndex=table.stackIndex+1;
+
+    if(player.status==="deal"){
+
+    }else{
+        if(table.dealer.openCards.length>0){
+            startNewGame(table);
+        }
+
+
+
+        player.status="deal";
+        player.cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
+        table.stackIndex=table.stackIndex+1;
+    }
     var temp=1;
 
 
     //check if all players has atlease 1 card
     for(var i =0 ; i<table.players.length;i++){
+        if(table.players[i].status!="standBy"){
+            if(table.players[i].cards.length<1){
 
-        if(table.players[i].cards.length<1){
-
-            temp=0; 
-            break;
+                temp=0; 
+                break;
+            }
         }
     }
 
@@ -404,8 +418,9 @@ function deal(player,table){
             //give all player a second card
 
             for(var j=0;j<table.players.length;j++){
+                if(table.players[j].status!="standBy"){
                 table.players[j].cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
-                table.stackIndex=table.stackIndex+1;
+                table.stackIndex=table.stackIndex+1;}
             }
             //give dealer a second card
 
@@ -423,23 +438,40 @@ function deal(player,table){
 
     }
     updateTotal(table);
-}
+
 }
 
 function hit(player,table){
 
     player.status="hit";
-
+    var tableIndex = findPlayerTable(player.playerId);
     player.cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
     table.stackIndex=table.stackIndex+1;
 
     updateTotal(table);
 
     var dTotal =  checkFinalTotal(table);
+    sendUpdateToAllPlayer(tableIndex);
+
+    temp =1;
+    for(var l=0; l<table.players.length;l++){
+        if(table.players[l].status!="win" && table.players[l].status!="lose" && table.players[l].status!="standBy"){
+
+            temp=0;
+            break;
+        }
+    }
+    if(temp===0){
+
+    }else{
+        //  startNewGame(table);
+
+    }
 
 }
 
 function stand(player,table){
+
 
     player.status="stand";
     var tableIndex = findPlayerTable(player.playerId);
@@ -452,7 +484,7 @@ function stand(player,table){
     }
 
     if(temp===0){
-        //One player has hit.
+        //One player has hit or deal.
         //Wait for other players to select stand
     }else{
         //All players have selected stand
@@ -479,7 +511,7 @@ function stand(player,table){
 
 
                 if(temp1===0){
-                    
+
                     //Some player is still standing
                     if(checkDealerTotal(table)<17){
                         table.dealer.openCards.push(getCardJSON(table.stack.cards[table.stackIndex]));
@@ -487,7 +519,7 @@ function stand(player,table){
                     }
                     else{
                         for(var k=0;k< table.players.length;k++){
-                           
+
                             if(table.players[k].status==="stand"){
                                 if(checkPlayerTotal(table.players[k])>checkDealerTotal(table)){
                                     table.players[k].status="win";
@@ -513,21 +545,34 @@ function stand(player,table){
         }
         temp =1;
         for(var l=0; l<table.players.length;l++){
-            if(table.players[l].status!="win" && table.players[l].status!="lose"){
-                
+            if(table.players[l].status!="win" && table.players[l].status!="lose" && table.players[l].status!="standBy"){
+
                 temp=0;
                 break;
             }
         }
         if(temp===0){
-            
+
         }else{
-            startNewGame(table);
-           
+            sendUpdateToAllPlayer(tableIndex);
+
         }
 
 
 
+    }
+
+}
+
+function freeOtherPlayer(tableIndex){
+    var table = tables[tableIndex];
+    if(table!=undefined){
+        for(var i =0; i<table.players.length;i++){
+            if(table.players[i].status==="stand"){
+                if(table.players[i]!=undefined){
+                    stand(table.players[i],table);}
+            }
+        }
     }
 }
 
@@ -544,6 +589,7 @@ io.on("connection",function(sct){
         removePlayerFromTable(playerId);
         delete sockets[playerId];
         delete playerSocket[sct];
+        freeOtherPlayer(tableIndex);
         sendUpdateToAllPlayer(tableIndex);
         removeEmptyTable();
 
@@ -556,10 +602,10 @@ io.on("connection",function(sct){
         var tableIndex = findPlayerTable(playerId);
 
         var player = findPlayer(playerId);
-      //  player.status="startNew";
+        //  player.status="startNew";
         player.playerBet = data.bet;
         player.playerMoney= player.playerMoney-player.playerBet;
-       // startNewGame(tables[tableIndex]);
+        // startNewGame(tables[tableIndex]);
         deal(player,tables[tableIndex]);
         //   var liveTable = getLiveTable(playerId,tableIndex);
         sendUpdateToAllPlayer(tableIndex);
@@ -572,7 +618,7 @@ io.on("connection",function(sct){
 
         hit(player,tables[tableIndex]);
         // var liveTable = getLiveTable(playerId,tableIndex);
-        sendUpdateToAllPlayer(tableIndex);
+        // sendUpdateToAllPlayer(tableIndex);
 
     });
     sct.on("stand",function(data){
@@ -600,7 +646,22 @@ io.on("connection",function(sct){
             player = JSON.parse(JSON.stringify(data));
             player.cards =[];
             if(table.dealer.openCards.length>0){
-                player.status="standby"
+                var temp=0;
+                for(var i =0;i<table.players.length;i++){
+                    if(table.players[i].status==="deal" || table.players[i].status==="stand" || table.players[i].status==="waiting" || table.players[i].status==="hit" ){
+                        temp=1;
+                        break;
+                    }
+                }
+                if(temp=0 || player.status===undefined){
+                    console.log("starting new game for new player");
+                    player.status="waiting";
+                    startNewGame(table);
+                }else{
+                    console.log(player.status);
+                    console.log("adding player to standBY");
+                    player.status="standBy";
+                }
             }else{
                 player.status="waiting";
             }
@@ -630,8 +691,48 @@ io.on("connection",function(sct){
 
 
     });
+    sct.on("standBy",function(data){
+        playerId=data.playerId;
+        var tableIndex = findPlayerTable(playerId);
+        var player = findPlayer(playerId);
+        var table=tables[tableIndex];
 
-    /*
+        player.status="standBy";
+        for(var i=0; i<table.players.length;i++){
+            console.log(table.players);
+            if(table.players[i].playerId!=player.playerId){
+                if(table.players[i].status==="stand"){
+                    console.log("i am here");
+                    stand(table.players[i],table);
+                    // sendUpdateToAllPlayer(tableIndex);
+                }
+            }
+        }
+
+
+        sendUpdateToAllPlayer(tableIndex);
+        temp =0;
+
+        for(var l=0; l<table.players.length;l++){
+            if(table.players[l].status==="deal"){
+                temp=1;
+                deal(table.players[l],tables[tableIndex]);
+                sendUpdateToAllPlayer(tableIndex);
+
+            }
+        }
+        if(temp===0){
+            //All players are on standBy win or lose
+
+            startNewGame(table);
+        }else{
+
+            // startNewGame(table);
+
+        }
+
+    });
+    /*   
 sct.on("error",function(err){
    console.log(err); 
 });*/

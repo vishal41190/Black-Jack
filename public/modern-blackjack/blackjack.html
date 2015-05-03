@@ -7,7 +7,7 @@
         <link rel="stylesheet" type="text/css" href="./style/cardi.css">
 
         <script src="./javascripts/angular.min.js"></script>
-        <script src="http://localhost:3000/socket.io/socket.io.js"></script>-->
+        <script src="http://10.42.0.1:3000/socket.io/socket.io.js"></script>-->
         <script src="./javascripts/angular-socket.js"></script>
         <script src="./javascripts/app.js" type="application/javascript"></script>
     </head>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="label-bottom">{{table.otherPlayer[0].playerName}}</div>
                 </div>
-
+                    
                 <div class="cards">
                     <!--center dealer and player-->
                     <div class="label-top">Dealer(Total : {{table.dealer.total1}}<div ng-if="showTotal2(table.dealer.total1,table.dealer.total2)">/{{table.dealer.total2}}</div>)</div>
@@ -62,7 +62,7 @@
                         <span  ng-repeat='cards in table.player.cards' class="{{cardCss($last)}} {{cards.card}}"></span>
 
                     </div>
-                    <div class="label-bottom" >{{table.player.playerName}}(Total : {{table.player.total1}}<div ng-if="showTotal2(table.player.total1,table.player.total2)">/{{table.player.total2}}</div>) <div ng-if="playerstatus(table.player.status)">{{table.player.status}}</div></div>
+                    <div class="label-bottom" >{{table.player.playerName}}(Total : {{table.player.total1}}<div ng-if="showTotal2(table.player.total1,table.player.total2)">/{{table.player.total2}}</div>)</div>
                 </div>
 
                 <div class="cards right">
@@ -71,36 +71,44 @@
                         <span  ng-repeat='cards in table.otherPlayer[1].cards' class="{{cardCss($last)}} {{cards.card}}"></span>
                         </span>
                 </div>
-                <div class="label-bottom">{{table.otherPlayer[1].PlayerName}}</div>
+                <div class="label-bottom">{{table.otherPlayer[1].playerName}}</div>
             </div>
         </div>
-
+        
         <div class="alert-container">
-            <div class="alert alert-block alert-none" style="display: block;">{{alertMessage}}</div>
-                   
+            <div class="alert alert-block alert-none {{messsageCss(table.player.status)}}" style="display: block;">{{alertMessage}}</div>
+
         </div> 
 
         <div class="player controls">
-            <div ng-if="table.player.status==='waiting'|| table.player.status==='startNew' || table.player.status==='lose' || table.player.status==='win'"class="bet btn-toolbar">
-                <div class="btn-group">            
-                    <a class="chip span1" href="" ng-click="bet(1)" ><span>1</span></a>
-                    <a class="chip span1" href="" ng-click="bet(5)"><span>5</span></a>
-                    <a class="chip span1" href="" ng-click="bet(25)" ><span>25</span></a>
-                    <a class="chip span1" href="" ng-click="bet(100)"><span>100</span></a>
-                    <div class="timer">{{timer}}</div>
-                </div>
-            </div>        
-            <div class="btn-toolbar">
-                <div ng-if="table.player.status==='waiting' || table.player.status==='startNew'" class="btn-group rect">
-                    <a id="double" ng-click="deal()"class="btn btn-large" href="#">Deal</a>
-                </div>
-                <div class="btn-group rect" ng-if="table.player.status==='deal' || table.player.status==='hit'">
-                    <a id="hit"ng-click="hit()" class="btn btn-success btn-large span1">Hit</a>
-                    <a id="stand" ng-click="stand()"class="btn btn-danger btn-large span1">Stand</a>
+            <div class="timer" ><div ng-if="showTimer()">{{timer}}</div>
+                
+                <div ng-if="status==='waiting'|| status==='lose' || status==='win'"class="bet btn-toolbar">
+                        
+                    <div class="btn-group">            
+                        <a class="chip span1" href="" ng-click="bet(1)" ><span>1</span></a>
+                        <a class="chip span1" href="" ng-click="bet(5)"><span>5</span></a>
+                        <a class="chip span1" href="" ng-click="bet(25)" ><span>25</span></a>
+                        <a class="chip span1" href="" ng-click="bet(100)"><span>100</span></a>
+                            
+                    </div>
+                </div>        
+                <div class="btn-toolbar">
+                    <div ng-if="status==='waiting' || status==='startNew' || status==='lose' || status==='win'" class="btn-group rect">
+                        <a id="double" ng-click="deal()"class="btn btn-large" href="#">Deal</a>
+                    </div>
+                    <div class="btn-group rect" ng-if="status==='deal' || status==='hit'">
+                        <a id="hit"ng-click="hit()"  class="btn btn-success btn-large span1">Hit</a>
+                        <a id="stand" ng-click="stand()"class="btn btn-danger btn-large span1">Stand</a>
+                    </div>
+                    <div class="btn-group rect">
+                    <a class="btn btn-success btn-large span1 disabled" disabled>Table No: {{table.tableName}}</a>
+                    </div>
+
                 </div>
             </div>
         </div>
-
+<!--
         <div class="col-md-4"></div>
         <div class ="col-md-4">
             <p class="playerMessage" ><br/>Sarah: egestas viverra augue a ornare</p>
@@ -112,7 +120,7 @@
         <div class="col-md-4"></div>
         </div>
 
-
+-->
     </body>
 
 </html>

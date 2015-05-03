@@ -224,6 +224,9 @@ body {
   top: 7px;
 }
 
+.disabled{
+    width:10em;
+}
 /* used http://cssdeck.com/labs/css3-only-poker-chips to create chips */
 .chip {
     background: #414141;
@@ -303,6 +306,8 @@ body {
   font-size: 2.5em;
   padding: 10px;
   text-align: center;
+    color: #e3e3e3;
+
   margin: 0 auto;
-  background: #ccc;
+  
 }
