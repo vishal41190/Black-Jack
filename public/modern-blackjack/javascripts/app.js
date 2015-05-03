@@ -34,10 +34,10 @@ var game = app.controller("game",function($scope,$socket,$interval){
             }
         };
         $scope.messsageCss=function(status){
-           
-          if(status==="win"){
-              return "alert-success";
-          }  
+
+            if(status==="win"){
+                return "alert-success";
+            }  
             else if(status==="lose"){
                 return "alert-danger";
             }
@@ -111,7 +111,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
             $scope.table = data;
 
             if($scope.table.player.status==="win"){
-                                $scope.status="win";
+                $scope.status="win";
                 $scope.timer = -1;
                 updateMessage();
             }
@@ -158,18 +158,18 @@ var game = app.controller("game",function($scope,$socket,$interval){
             }
             if($scope.table.player.status==="deal"){
 
-               
+
                 if($scope.table.dealer.openCards.length<1){
-                     var temp=0;
-                for(var i=0;i<$scope.table.otherPlayers;i++){
-                    if($scope.table.otherPlayer[i].status==="standBy"){
-                       temp=1;
+                    var temp=0;
+                    for(var i=0;i<$scope.table.otherPlayers;i++){
+                        if($scope.table.otherPlayer[i].status==="standBy"){
+                            temp=1;
+                        }
                     }
-                }
                     if(temp===0){
-                    $scope.status = "waitingForOther";
-                    updateMessage();
-                    $scope.timer = -1;
+                        $scope.status = "waitingForOther";
+                        updateMessage();
+                        $scope.timer = -1;
                     }
                     else{
                         $scope.status ="deal";
@@ -180,11 +180,14 @@ var game = app.controller("game",function($scope,$socket,$interval){
                 }
                 else{
                     if($scope.status!="deal"){
+                        if($scope.table.player.total1===21 || $scope.table.player.total2===21){
+                            console.log("you got black jack");
+                        }
                         $scope.status = "deal";
                         updateMessage();
                         $scope.timer=20;
                     }
-                    
+
 
                 }
             }
@@ -200,7 +203,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
             if($scope.table.player.status==="stand"){
                 if($scope.status==="stand"){
                     $scope.status==="waitingForOther";
-                    
+
                 }else{
                     $scope.status="stand";
                     $scope.timer = -1;
@@ -210,7 +213,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
             console.log($scope.table.player.status);
             console.log($scope.status);
             if($scope.table.player.status==="win" || $scope.table.player.status === "lose"){
-                
+
                 var temp=1;
                 for(var i =0; i<$scope.table.otherPlayer.length;i++){
                     if($scope.table.otherPlayer[i].status==="deal" || $scope.table.otherPlayer[i].status==="hit" ||$scope.table.otherPlayer[i].status==="stand"){
@@ -229,7 +232,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
                 var temp=1;
                 for(var i=0;i<$scope.table.otherPlayers.length;i++){
                     if($scope.table.otherPlayers[i].status==="standBy"){
-                        
+
                     }
                 }
             }
@@ -247,7 +250,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
 
         $scope.deal = function() {
             if($scope.table.player.playerBet>0){
-            $socket.emit('deal', {playerId:playerId,bet:$scope.table.player.playerBet});
+                $socket.emit('deal', {playerId:playerId,bet:$scope.table.player.playerBet});
             }
             else{
                 $scope.alertMessage="Place minimum bet of $1";
