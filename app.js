@@ -4,13 +4,16 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 var http = require('http');
 var socketIo = require("socket.io");
-
+var MongoClient = require("mongodb").MongoClient;
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var game = require('./model/game');
 var test = require('./routes/test');
+var blackjack = require('./routes/blackjack');
+var Q = require("q");
 var databaseUrl = "mongodb://localhost:27017/blackjack";
 var app = express();
 var server = http.createServer(app);
@@ -28,9 +31,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(session({
+    secret: '123456'
+}));
 app.use('/', routes);
 app.use('/users', users);
+app.use('/blackjack',blackjack);
 
 app.use('/test',test);
 // catch 404 and forward to error handler
@@ -576,7 +582,38 @@ function freeOtherPlayer(tableIndex){
     }
 }
 
+function getPlayerMoney(Id){
+    var deferred = Q.defer();
+    MongoClient.connect(databaseUrl, function(err, db) {
+        if (err) {
+            console.log("Problem connecting database");
+            res.status(404).send("Problem connecting database");
+        } else {
 
+            var collection = db.collection("user",{capped:true,size:100000});
+            var user;
+            var playerId = parseInt(Id);
+            console.log(playerId);
+            collection.find({playerId: playerId}).toArray(function(err,items){
+                if(err){
+                    console.log(err);
+                    deferred.reject(new Error(err));
+                   
+                }else{
+                if(items.length>0){
+                deferred.resolve(items[0].playerMoney);
+                }
+                    else{
+                        deferred.reslve(500);
+                    }
+                }
+            });
+                
+
+        }
+    });
+return deferred.promise;
+}
 
 
 io.on("connection",function(sct){
@@ -639,11 +676,16 @@ io.on("connection",function(sct){
         var player;
         playerId=data.playerId;
         var table =findPlayerTable(data.playerId);
-
+        console.log(table);
         if(table===null){
             console.log("table is null");
             table= game.findTableForMe(tables);
             player = JSON.parse(JSON.stringify(data));
+            (getPlayerMoney(player.playerId)).then(function(money){
+                player.playerMoney=money;
+                 console.log("player money");
+            console.log(player.playerMoney);
+            console.log();
             player.cards =[];
             if(table.dealer.openCards.length>0){
                 var temp=0;
@@ -672,19 +714,26 @@ io.on("connection",function(sct){
             sockets[player.playerId]=sct;
             playerSocket[sct]=player.playerId;
             game.addMeToTable(player,table);
+             var tableIndex = findPlayerTable(player.playerId);
+
+        sendUpdateToAllPlayer(tableIndex);
+            });
+           
+           
 
         }
         else{
 
             //console.log(table);
             player = findPlayer(data.playerId);
+             var tableIndex = findPlayerTable(player.playerId);
+
+        sendUpdateToAllPlayer(tableIndex);
 
         }
         //  var liveTable=getLiveTable(player.playerId,findTableIndex(table.tableName));
         // console.log(tables[0].players[0]);
-        var tableIndex = findPlayerTable(player.playerId);
-
-        sendUpdateToAllPlayer(tableIndex);
+       
 
         //io.socket(sct.id).emit("added",liveTable);
         //sct.emit("added",liveTable);   

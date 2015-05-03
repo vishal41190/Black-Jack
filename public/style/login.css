@@ -1,0 +1,35 @@
+body {
+  background-image: url("../img/wood.png");
+}
+
+#btnLogon {
+    width: 150px;
+}
+
+#btnguest {
+    width: 150px;
+}
+
+#btnRegister{
+    width: 150px;
+}
+
+span.blackjackImg{
+    
+     position: inherit;
+   width: 35em;
+  height: 29em;
+  background-image: url(../img/blackjack.JPG);
+  opacity: 1;
+  display: block;
+    background-size: cover;
+}
+.headerImg{
+    margin-left: 15em;
+     margin-top: 10em;
+}
+.buttonBlock{
+    margin-left:15em;
+}
+
+.top-buffer { margin-top:40px; }
