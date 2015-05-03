@@ -5,11 +5,11 @@ var playerName= document.getElementById('playerName').innerHTML;
 var stop;
 
 app.config(function ($socketProvider) {
-    $socketProvider.setConnectionUrl('http://10.42.0.1:3000');
-});
+    $socketProvider.setConnectionUrl('http://localhost:3000');
+});//10.42.0.1
 var game = app.controller("game",function($scope,$socket,$interval){
 
-    // $scope.table= {"tableName":"i925l0ew","player":{"playerId":1430276316308,"playerName":"vishal","playerMoney":500,"_id":"55397f6f4632e8ff4f2a7c87","cards":[{"card":"HJ","value1":10,"value2":10},{"card":"CQ","value1":10,"value2":10}],"status":"deal","total1":20,"total2":20},"otherPlayer":[{"playerId":1430276305397,"playerName":"vishal","playerMoney":500,"_id":"55397f6f4632e8ff4f2a7c87","cards":[{"card":"HK","value1":10,"value2":10},{"card":"D3","value1":3,"value2":3}],"status":"deal","total1":13,"total2":13}],"dealer":{"openCards":[{"card":"H7","value1":7,"value2":7}],"blindedCard":[{"card":"D8","value1":8,"value2":8}],"total1":7,"total2":7}};
+   
     window.onbeforeunload = function(){
 
         $socket.disconnect();  
@@ -61,7 +61,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
             }
         }
 
-        $scope.timer=20;
+        $scope.timer=-1;
         function updateMessage(){
             if($scope.status==="standBy"){
                 $scope.alertMessage="wait for next round";
@@ -91,11 +91,11 @@ var game = app.controller("game",function($scope,$socket,$interval){
 
 
         $scope.timerFunction=function(){
-            console.log("timer running ");
+           
             $scope.timer--;
 
             if ($scope.timer === 0){ 
-                console.log("time to zero");
+               
                 $socket.emit("standBy",{playerId:playerId});
 
             }
@@ -108,7 +108,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
 
         $socket.on('update', function (data) {
 
-            console.log(data);
+          
             $scope.table = data;
 
             if($scope.table.player.status==="win"){
@@ -129,16 +129,16 @@ var game = app.controller("game",function($scope,$socket,$interval){
             if($scope.table.player.status==="waiting"){
                 if($scope.status==="win"){
                     $scope.status="winLastRound";
-                    $scope.timer = 20;
+                    $scope.timer = 15;
                 }
                 else if($scope.status==="lose"){
 
                     $scope.status="loseLastRound";
-                    $scope.timer = 20;
+                    $scope.timer = 15;
                 }
                 else if($scope.status==="standBy"){
                     $scope.status="waiting";
-                    $scope.timer =20;
+                    $scope.timer =15;
                 }
 
                 else{
@@ -149,7 +149,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
                         $scope.startTimer = $interval($scope.timerFunction,1000);
                     }else{
                         $scope.status ="waiting";
-                        $scope.timer = 20;
+                        $scope.timer = 15;
 
                     }
 
@@ -175,7 +175,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
                     else{
                         $scope.status ="deal";
                         updateMessage();
-                        $scope.timer=20;
+                        $scope.timer=15;
                     }
 
                 }
@@ -186,7 +186,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
                         }
                         $scope.status = "deal";
                         updateMessage();
-                        $scope.timer=20;
+                        $scope.timer=15;
                     }
 
 
@@ -197,7 +197,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
 
                 }else{
                     $scope.status="hit";
-                    $scope.timer=20;
+                    $scope.timer=15;
 
                 }
             }
@@ -211,15 +211,13 @@ var game = app.controller("game",function($scope,$socket,$interval){
                 }
                 updateMessage();
             }
-            console.log($scope.table.player.status);
-            console.log($scope.status);
+           
             if($scope.table.player.status==="win" || $scope.table.player.status === "lose"){
 
                 var temp=1;
                 for(var i =0; i<$scope.table.otherPlayer.length;i++){
                     if($scope.table.otherPlayer[i].status==="deal" || $scope.table.otherPlayer[i].status==="hit" ||$scope.table.otherPlayer[i].status==="stand"){
-                        console.log("i am here");
-                        console.log($scope.table.otherPlayer[i].status);
+                      
                         temp=0;
                         break;
                     }
@@ -244,9 +242,13 @@ var game = app.controller("game",function($scope,$socket,$interval){
                 // $socket.emit("startNew",{playerId:playerId,bet:amount});
                 //  $scope.table.player.status="startNew";
             }
+            if($scope.table.player.playerMoney>=amount){
             $scope.table.player.playerMoney = $scope.table.player.playerMoney -amount;
             $scope.table.player.playerBet = $scope.table.player.playerBet + amount;
-            console.log(amount);
+            }else{
+                $scope.alertMessage= "You don't have enough to bet more";
+            }
+           
         }
 
         $scope.deal = function() {
@@ -261,7 +263,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
         $scope.hit = function hit(){
 
             $socket.emit("hit",playerId); 
-            $scope.timer=20;
+            $scope.timer=15;
 
         };
         $scope.stand = function stand(){
