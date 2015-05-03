@@ -1,6 +1,6 @@
-body {
+/*body {
   background-image: url("../img/wood.png");
-}
+}*/
 
 #btnLogon {
     width: 150px;

@@ -35,8 +35,9 @@ var main = function() {
                  $("label.error").hide();
                  $(".error").removeClass("error");
                   
-                $('#username').val("");
+               $('#email').val("");
                 $('input[type="password"]').val('');
+                $('input[type="email"]').val('');
 		$("#abc").hide();
 	});
 
@@ -107,9 +108,9 @@ messages:{
 
 $( "#form2" ).validate({
   rules: {
-  username: {
-      required: true,
-      minlength:2
+   email:{
+      required:true,
+      email:true
     },
      password:{
       required:true,
@@ -118,10 +119,7 @@ $( "#form2" ).validate({
         },
 
   messages:{
-    username: {
-      required:"please enter user name",
-      minlength:"Your user name must consists of atleast 2 characters"
-  },
+  
   password:{
     required:"please provide a password",
     minlength:"Your password must be atleast 5 characters long"

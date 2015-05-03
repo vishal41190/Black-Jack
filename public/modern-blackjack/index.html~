@@ -30,53 +30,24 @@
       "button"><strong>Sign Up</strong></button>
       </div>
     <div class="col-md-3 col-sm-3 col-xs-3"></div>
-  </div><!--lightbox functionalities so this would be hidden initially 
-<button type="button" id="btnRegister" class="btn btn-success"  >signup</button>
- <div id="guestform">
-        <div id="popupform">
-          <form action="#" id="form" method="post" name="form">
-            <h3>Welcome to CPSC 631</h3>
-            <h6>This course concentrates on Datbases and A database is an organized collection of data.The data is typically organized to model aspects of reality in a way that supports processes requiring information. For example, modelling the availability of rooms in hotels in a way that supports finding a hotel with vacancies </h6>
-            
-            <button type="button" class="formbutton" id="PostSubmit">submit</button>
-            <button type="button" class="formbutton" id="PostCancel">Cancel</button>
-          </form>
-        </div>
-      </div>
-
-      
-
-
-
-      <div id="loginform">
-        <div id="popupform">
-          <form action="#" id="form" method="post" name="form">
-            <h3>Welcome to CPSC 531</h3>
-            <h6>Database management systems are computer software applications that interact with the user, other applications, and the database itself to capture and analyze data. A general-purpose DBMS is designed to allow the definition, creation, querying, update, and administration of databases. Well-known DBMSs include MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase and IBM DB2.</h6>
-            
-            <button type="button" class="formbutton" id="PostSubmit">submit</button>
-            <button type="button" class="formbutton" id="PostCancel">Cancel</button>
-          </form>
-        </div>
-      </div>
-
--->
+  </div>
+<!--lightbox functionalities so this would be hidden initially -->
 
   <div id="sss">
     <div id="popupform">
       <form action="#" id="form1" method="post" name="form">
         <hr>
 
-        <h2>Registeration Form</h2><input id="firstname" name="firstname"
-        placeholder="First Name" type="text"><br>
-        <input id="lastname" name="lastname" placeholder="Last Name" type=
-        "text"><br>
-        <input id="email" name="email" placeholder="Email" type="email"><br>
-        <input id="password" name="password" placeholder="Password" type=
-        "password"><br>
-        <input id="reenterpassword" name="reenterpassword" placeholder=
-        "Re-enter Password" type="password"><br>
-        <button class="btn btn-success formbutton" id="PostSubmit" type=
+        <div><h2>Registeration Form</h2> </div><div class="sandeep"><input id="firstname" name="firstname"
+        placeholder="First Name" type="text"></div>
+        <div class="sandeep"><input id="lastname" name="lastname" placeholder="Last Name" type=
+        "text"></div>
+        <div class="sandeep"><input id="email" name="email" placeholder="Email" type="email"></div>
+        <div class="sandeep"><input id="password" name="password" placeholder="Password" type=
+        "password"></div>
+        <div class="sandeep"><input id="reenterpassword" name="reenterpassword" placeholder=
+        "Re-enter Password" type="password"></div>
+        <button class="btn btn-success" id="PostSubmit" type=
         "submit">Submit</button> <button class="btn btn-default formbutton" id=
         "PostCancel" type="button">Cancel</button>
       </form>
@@ -88,10 +59,11 @@
       <form action="#" id="form2" method="post" name="form">
         <hr>
 
-        <h2>Login</h2><input id="username" name="username" placeholder=
-        "User Name" type="text"><br>
+        <h2>Login</h2> <div class="sandeep"><input id="username" name="username" placeholder=
+        "User Name" type="text"></div>
+<div class="sandeep">
         <input id="password" name="password" placeholder="Password" type=
-        "password"><br>
+        "password"> </div>
         <button class="btn btn-success" id="login1" type=
         "submit">Login</button> <button class="btn btn-default formbutton" id=
         "login2" type="button">Cancel</button>
@@ -103,10 +75,11 @@
     <div id="popupform">
       <form action="#" id="form3" method="post" name="form">
         <hr>
-        <h2>Guest Form</h2><input id="guestname" name="guestname" placeholder=
+        <h2>Guest Form</h2>
+<input id="guestname" name="guestname" placeholder=
         "Guest Name" type="text"><br>
         <button class="btn btn-success" id="guest1" type="submit">Enter as
-        Guest</button> <button class="btn btn-default formbutton" id=
+        Guest</button> <label<button class="btn btn-default formbutton" id=
         "guest2" type="button">Cancel</button>
       </form>
     </div>
