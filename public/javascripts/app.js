@@ -61,7 +61,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
             }
         }
 
-        $scope.timer=-1;
+        $scope.timer=15;
         function updateMessage(){
             if($scope.status==="standBy"){
                 $scope.alertMessage="wait for next round";
@@ -110,7 +110,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
 
           
             $scope.table = data;
-
+            console.log($scope.table);
             if($scope.table.player.status==="win"){
                 $scope.status="win";
                 $scope.timer = -1;
