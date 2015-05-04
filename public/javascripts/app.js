@@ -67,16 +67,16 @@ var game = app.controller("game",function($scope,$socket,$interval){
                 $scope.alertMessage="wait for next round";
             }
             if($scope.status==="win"){
-                $scope.alertMessage = "Congrates You WON. Place bet and play again";
+                $scope.alertMessage = "Congrats, You WON. Place bet and play again";
             }
             if($scope.status==="lose"){
-                $scope.alertMessage = "Sorry You LOSE. Place bet and play again";
+                $scope.alertMessage = "Sorry, You LOSE. Place bet and play again";
             }
             if($scope.status==="winLastRound"){
-                $scope.alertMessage="Congrates You WON. Place bet and play again";
+                $scope.alertMessage="Congrats, You WON. Place bet and play again";
             }
             if($scope.status==="loseLastRound"){
-                $scope.alertMessage = "Sorry You LOSE. Place bet and play again";
+                $scope.alertMessage = "Sorry, You LOSE. Place bet and play again";
             }
             if($scope.status==="waiting"){
                 $scope.alertMessage="Place bet and select Deal";
