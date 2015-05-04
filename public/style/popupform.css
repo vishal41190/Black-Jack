@@ -49,7 +49,7 @@ div#popupform {
 /*this is for sign in only*/
 
 /*this is for guest*/
-.form3 {
+#form3 {
 	max-width:500px;
 	min-width:400px;
 	min-height:300px;

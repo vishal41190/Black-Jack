@@ -128,22 +128,25 @@ var main = function() {
     });
 
     $( "#form3" ).validate({
-
+        
         rules: {
             guestname: {
-                required: true,
-                minlength:2
+                required:true,
+                minlength:2,
+                maxlength:7
+               
             }
         },
         messages:{
             guestname: {
                 required:"please enter guest name",
-                minlength:"Your guest name must consists of atleast 2 characters"
+                minlength:"Your guest name must consists of atleast 2 characters",
+                maxlength: "Your guest name should not exeed 7 characters"
             }
         },
         submitHandler: function(form) {
-            form.submit();
-        }
+           form.submit();
+            }
 
 
     });
@@ -154,6 +157,7 @@ var main = function() {
     $("#guest1").click(function(){
 
         var userName = $("#guestname").val();
+        if(userName.length>2 && userName.length<7){
         console.log("guest login");
         var playerName = JSON.stringify({playerName:userName});
         $.ajax({
@@ -175,6 +179,10 @@ var main = function() {
             console.log(data);
             console.log(status);
         });
+    }
+        else{
+            
+        }
     });
 
 

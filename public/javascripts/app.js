@@ -5,7 +5,7 @@ var playerName= document.getElementById('playerName').innerHTML;
 var stop;
 
 app.config(function ($socketProvider) {
-    $socketProvider.setConnectionUrl('http://localhost:3000');
+    $socketProvider.setConnectionUrl('http://10.42.0.1:3000');
 });//10.42.0.1
 var game = app.controller("game",function($scope,$socket,$interval){
 
