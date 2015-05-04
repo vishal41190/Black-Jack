@@ -15,6 +15,7 @@ var test = require('./routes/test');
 var blackjack = require('./routes/blackjack');
 var Q = require("q");
 var databaseUrl = "mongodb://localhost:27017/blackjack";
+var stackModel = require("./model/stack");
 var app = express();
 var server = http.createServer(app);
 io = socketIo(server);
@@ -352,7 +353,7 @@ function checkFinalTotal(table){
     }
 }
 function startNewGame(table){
-
+console.log("startNewGame called");
     table.dealer.openCards=[];
     table.dealer.blindedCard=[];
     for(var j=0; j<table.players.length;j++){
@@ -361,6 +362,14 @@ function startNewGame(table){
 
     }
     updateTotal(table);
+    if(table.stackIndex>80){
+        console.log("new Stack");
+        var stack = new stackModel.Stack();
+        stack.makeDeck(2);
+        stack.shuffle(5);
+        table.stack=stack;
+        table.stackIndex=0;
+    }
     var tableIndex = findTableIndex(table.tableName);
     sendUpdateToAllPlayer(tableIndex);
 

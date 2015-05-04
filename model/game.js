@@ -23,7 +23,7 @@ function createNewTable(){
     var stack = new stackModel.Stack();
     stack.makeDeck(2);
     stack.shuffle(5);
-   // console.log(stack);
+   // console.log(stack);   
     var table = {
         tableName: generateTableName(),
         players:[],
