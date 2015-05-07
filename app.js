@@ -375,6 +375,18 @@ console.log("startNewGame called");
 
 
 }
+function checkBlackJack(table){
+    updateTotal(table);
+    for(var i =0; i<table.players.length;i++){
+        if(table.players[i].total1===21 || table.players[i].total2===21){
+            table.players[i].status="win";
+            console.log(table.players[i].playerMoney+"/ "+table.players[i].playerBet);
+             table.players[i].playerMoney = table.players[i].playerMoney + table.players[i].playerBet +  table.players[i].playerBet+ table.players[i].playerBet;
+           
+        }
+    }
+    
+}
 function deal(player,table){
 
     if(player.status==="deal"){
@@ -421,6 +433,8 @@ function deal(player,table){
                     table.players[j].cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
                     table.stackIndex=table.stackIndex+1;}
             }
+            
+            checkBlackJack(table);
             //give dealer a second card
 
             table.dealer.blindedCard.push(getCardJSON(table.stack.cards[table.stackIndex]));
@@ -452,20 +466,7 @@ function hit(player,table){
     var dTotal =  checkFinalTotal(table);
     sendUpdateToAllPlayer(tableIndex);
 
-    temp =1;
-    for(var l=0; l<table.players.length;l++){
-        if(table.players[l].status!="win" && table.players[l].status!="lose" && table.players[l].status!="standBy"){
-
-            temp=0;
-            break;
-        }
-    }
-    if(temp===0){
-
-    }else{
-        //  startNewGame(table);
-
-    }
+    
 
 }
 
