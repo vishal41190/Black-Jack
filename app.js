@@ -152,7 +152,7 @@ function getKeysForValue(obj, value) {
 
 function sendUpdateToAllPlayer(tableIndex){
    
-    if(tables[tableIndex]!=undefined){
+    if(tables[tableIndex]!==undefined){
         var players = tables[tableIndex].players;
         var liveTbl;
         for(var i =0 ;i < players.length ; i++){
@@ -171,7 +171,7 @@ function getPlayerFromTable(table,playerId){
     var player = table.players.filter(function(items){
         return items.playerId=playerId;
     });
-};
+}
 
 function findPlayerTable(playerId){
     var player;
@@ -224,7 +224,7 @@ function getCardJSON(x){
 function removePlayerFromTable(playerId){
     var tableIndex =findPlayerTable(playerId);
 
-    if(tableIndex!=null){
+    if(tableIndex!==null){
         var elementPos = tables[tableIndex].players.map(function(x) {return x.playerId; }).indexOf(playerId);
 
         tables[tableIndex].players.splice(elementPos,1);
@@ -260,7 +260,7 @@ function checkPlayerTotal(player){
         //total1 > total2
         if(player.total1>21){
             //total1 > 21
-            if(player.total2!=null){
+            if(player.total2!==null){
                 //total2 ! = null  
 
                 total=player.total2;
@@ -303,7 +303,7 @@ function checkDealerTotal(table){
         //total1 > total2
         if(table.dealer.total1>21){
             //total1 > 21
-            if(table.dealer.total2!=null){
+            if(table.dealer.total2!==null){
                 //total2 ! = null  
                 total=table.dealer.total2;
             }else{
@@ -566,10 +566,10 @@ function stand(player,table){
 
 function freeOtherPlayer(tableIndex){
     var table = tables[tableIndex];
-    if(table!=undefined){
+    if(table!==undefined){
         for(var i =0; i<table.players.length;i++){
             if(table.players[i].status==="stand"){
-                if(table.players[i]!=undefined){
+                if(table.players[i]!==undefined){
                     stand(table.players[i],table);}
             }
         }
@@ -811,5 +811,3 @@ sct.on("error",function(err){
 });*/
 
 });
-
-
