@@ -157,7 +157,7 @@ var main = function() {
     $("#guest1").click(function(){
 
         var userName = $("#guestname").val();
-        if(userName.length>2 && userName.length<7){
+        if(userName.length>2 && userName.length<8){
         console.log("guest login");
         var playerName = JSON.stringify({playerName:userName});
         $.ajax({
