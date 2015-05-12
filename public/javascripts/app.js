@@ -59,7 +59,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
             else{
                 return false;
             }
-        }
+        };
 
         $scope.timer=15;
         function updateMessage(){
@@ -99,7 +99,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
                 $socket.emit("standBy",{playerId:playerId});
 
             }
-        }
+        };
 
 
 
@@ -239,8 +239,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
 
         $scope.bet= function(amount){
             if($scope.table.player.status==="lose" || $scope.table.player.status==="win"){
-                // $socket.emit("startNew",{playerId:playerId,bet:amount});
-                //  $scope.table.player.status="startNew";
+                
             }
             if($scope.table.player.playerMoney>=amount){
             $scope.table.player.playerMoney = $scope.table.player.playerMoney -amount;
@@ -249,7 +248,7 @@ var game = app.controller("game",function($scope,$socket,$interval){
                 $scope.alertMessage= "You don't have enough to bet more";
             }
            
-        }
+        };
 
         $scope.deal = function() {
             if($scope.table.player.playerBet>0){
@@ -279,7 +278,3 @@ var game = app.controller("game",function($scope,$socket,$interval){
 
 });
 
-//Notes to do
-
-//set minimum bet. 
-//Change the way total1 and total2 display.

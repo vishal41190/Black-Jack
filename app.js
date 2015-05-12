@@ -151,7 +151,7 @@ function getKeysForValue(obj, value) {
 
 
 function sendUpdateToAllPlayer(tableIndex){
-   
+
     if(tables[tableIndex]!==undefined){
         var players = tables[tableIndex].players;
         var liveTbl;
@@ -231,7 +231,7 @@ function removePlayerFromTable(playerId){
         tables[tableIndex].numberOfPlayer = tables[tableIndex].numberOfPlayer-1;
 
     }
-};
+}
 function updateTotal(table){
     for(var i=0; i<table.players.length;i++){
         var total1=0;
@@ -353,7 +353,7 @@ function checkFinalTotal(table){
     }
 }
 function startNewGame(table){
-console.log("startNewGame called");
+    console.log("startNewGame called");
     table.dealer.openCards=[];
     table.dealer.blindedCard=[];
     for(var j=0; j<table.players.length;j++){
@@ -381,11 +381,11 @@ function checkBlackJack(table){
         if(table.players[i].total1===21 || table.players[i].total2===21){
             table.players[i].status="win";
             console.log(table.players[i].playerMoney+"/ "+table.players[i].playerBet);
-             table.players[i].playerMoney = table.players[i].playerMoney + table.players[i].playerBet +  table.players[i].playerBet+ table.players[i].playerBet;
-           
+            table.players[i].playerMoney = table.players[i].playerMoney + table.players[i].playerBet +  table.players[i].playerBet+ table.players[i].playerBet;
+
         }
     }
-    
+
 }
 function deal(player,table){
 
@@ -433,7 +433,7 @@ function deal(player,table){
                     table.players[j].cards.push(getCardJSON(table.stack.cards[table.stackIndex]));
                     table.stackIndex=table.stackIndex+1;}
             }
-            
+
             checkBlackJack(table);
             //give dealer a second card
 
@@ -466,7 +466,7 @@ function hit(player,table){
     var dTotal =  checkFinalTotal(table);
     sendUpdateToAllPlayer(tableIndex);
 
-    
+
 
 }
 
@@ -614,7 +614,7 @@ function updatePlayerMoney(Id,playerMoney){
     var deferred = Q.defer();
     MongoClient.connect(databaseUrl, function(err, db) {
         if (err) {
-            
+
         } else {
 
             var collection = db.collection("user",{capped:true,size:100000});
@@ -627,18 +627,18 @@ function updatePlayerMoney(Id,playerMoney){
                     deferred.resolve(0);
                 }
                 else{
-                   
+
                     deferred.resolve(1);
                 }
             });
-           
+
         }
     });
     return deferred.promise;
 }
 
 io.on("connection",function(sct){
-   
+
     var playerId;
     sct.on("disconnect",function(data){
 
@@ -679,7 +679,7 @@ io.on("connection",function(sct){
         // var liveTable = getLiveTable(playerId,tableIndex);
         // sendUpdateToAllPlayer(tableIndex);
         (updatePlayerMoney(playerId,player.playerMoney)).then(function(value){
-           
+
         });
 
     });
@@ -689,7 +689,7 @@ io.on("connection",function(sct){
         var player = findPlayer(playerId);
         stand(player,tables[tableIndex]);
         (updatePlayerMoney(playerId,player.playerMoney)).then(function(value){
-           
+
         });
     });
     sct.on("startNew",function(data){
@@ -704,15 +704,15 @@ io.on("connection",function(sct){
         var player;
         playerId=data.playerId;
         var table =findPlayerTable(data.playerId);
-       
+
         if(table===null){
-           
+
             table= game.findTableForMe(tables);
             player = JSON.parse(JSON.stringify(data));
-           
+
             (getPlayerMoney(player.playerId)).then(function(money){
                 player.playerMoney=money;
-               
+
                 player.cards =[];
                 if(table.dealer.openCards.length>0){
                     var temp=0;
@@ -722,13 +722,13 @@ io.on("connection",function(sct){
                             break;
                         }
                     }
-                    if(temp=0 || player.status===undefined){
-                       
+                    if(temp===0 || player.status===undefined){
+
                         player.status="waiting";
                         startNewGame(table);
                     }else{
-                      
-                       
+
+
                         player.status="standBy";
                     }
                 }else{
@@ -751,17 +751,17 @@ io.on("connection",function(sct){
         }
         else{
 
-           
+
             player = findPlayer(data.playerId);
             var tableIndex = findPlayerTable(player.playerId);
 
             sendUpdateToAllPlayer(tableIndex);
 
         }
-        
 
 
-       
+
+
 
     });
     sct.on("standBy",function(data){
@@ -772,10 +772,10 @@ io.on("connection",function(sct){
 
         player.status="standBy";
         for(var i=0; i<table.players.length;i++){
-            
+
             if(table.players[i].playerId!=player.playerId){
                 if(table.players[i].status==="stand"){
-                  
+
                     stand(table.players[i],table);
                     // sendUpdateToAllPlayer(tableIndex);
                 }

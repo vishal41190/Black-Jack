@@ -8,7 +8,7 @@ exports.Stack=function() {
   this.shuffle   = stackShuffle;
   this.combine   = stackCombine;
  
-}
+};
 
 stackMakeDeck=function(n) {
 
@@ -31,7 +31,7 @@ stackMakeDeck=function(n) {
       for (k = 0; k < ranks.length; k++)
         this.cards[i * m + j * ranks.length + k] = suits[j]+ranks[k];
       //    new Card(ranks[k], suits[j]);
-}
+};
 stackShuffle=function(n) {
 
   var i, j, k;
@@ -48,11 +48,11 @@ stackShuffle=function(n) {
     }
   }
         
-}
+};
 
 
 stackCombine=function(stack) {
 
   this.cards = this.cards.concat(stack.cards);
   stack.cards = new Array();
-}
+};

@@ -43,7 +43,7 @@ exports.addMeToTable=function(player,table){
     table.numberOfPlayer=table.numberOfPlayer+1;
     
     return table;
-}
+};
 
 
 function getPlayer(playerId){
@@ -72,6 +72,5 @@ exports.findTableForMe=function(tables){
     }else{
         return temp[0];
     }
-}
-
+};
 
